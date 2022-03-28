@@ -76,6 +76,14 @@ class MainActivity : AppCompatActivity() {
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
+
+        var openShutterButton: Button = findViewById(R.id.openShutterButton)
+
+        openShutterButton.setOnClickListener {
+            val intent = Intent(this, OpenShutterActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
