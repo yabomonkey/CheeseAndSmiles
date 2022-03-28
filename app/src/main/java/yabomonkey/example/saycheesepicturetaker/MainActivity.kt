@@ -25,6 +25,12 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
+        // Request camera permissions
+        if (!allPermissionsGranted()) {
+            ActivityCompat.requestPermissions(
+                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+        }
+        
         val delaySeekBar: SeekBar = findViewById(R.id.delaySeekBar)
 
         delayProgressLabel = findViewById(R.id.delayTextView)
