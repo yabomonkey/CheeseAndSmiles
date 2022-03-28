@@ -3,7 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/yabom/Documents/KotlinProjects/SayCheesePictureTaker/app/src/main/res/layout/activity_main.xml" value="0.5285326086956522" />
+        <entry key="..\:/Users/yabom/Documents/KotlinProjects/SayCheesePictureTaker/app/src/main/res/layout/activity_camera.xml" value="0.23867753623188406" />
+        <entry key="..\:/Users/yabom/Documents/KotlinProjects/SayCheesePictureTaker/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/yabom/Documents/KotlinProjects/SayCheesePictureTaker/app/src/main/res/layout/content_main.xml" value="0.33" />
         <entry key="..\:/Users/yabom/Documents/KotlinProjects/SayCheesePictureTaker/app/src/main/res/layout/fragment_first.xml" value="0.5285326086956522" />
         <entry key="..\:/Users/yabom/Documents/KotlinProjects/SayCheesePictureTaker/app/src/main/res/layout/fragment_second.xml" value="0.5285326086956522" />
