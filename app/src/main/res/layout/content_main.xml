@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Delay Timer"
+        android:text="@string/delay_timer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,17 +48,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Exposure Timer"
+        android:text="@string/exposure_timer"
         app:layout_constraintStart_toStartOf="@+id/delaySeekBar"
         app:layout_constraintTop_toBottomOf="@+id/delaySeekBar" />
 
     <Button
-        android:id="@+id/launchCamButton"
+        android:id="@+id/openShutterButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:text="Go go gadget camera"
+        android:text="@string/go_go_gadget_camera"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/exposureSeekBar"
         app:layout_constraintTop_toBottomOf="@+id/exposureSeekBar" />
