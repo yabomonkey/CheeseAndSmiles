@@ -101,4 +101,38 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(
+            baseContext, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults:
+        IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (allPermissionsGranted()) {
+
+            } else {
+                Toast.makeText(this,
+                    "Permissions not granted by the user.",
+                    Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
+    }
+
+    companion object {
+        private const val REQUEST_CODE_PERMISSIONS = 10
+        private val REQUIRED_PERMISSIONS =
+            mutableListOf (
+                Manifest.permission.CAMERA,
+                Manifest.permission.RECORD_AUDIO
+            ).apply {
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                    add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                }
+            }.toTypedArray()
+    }
 }
