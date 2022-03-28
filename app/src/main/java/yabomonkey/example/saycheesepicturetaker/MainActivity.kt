@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ui.AppBarConfiguration
 import yabomonkey.example.saycheesepicturetaker.databinding.ActivityMainBinding
 
+private const val TAG = "MainActivity"
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -40,6 +42,7 @@ class MainActivity : AppCompatActivity() {
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 delayProgressLabel.text = "Delay (in seconds): $progress"
+//                Log.d(TAG, "delaySeekBar: onProgressChanged")
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -58,6 +61,7 @@ class MainActivity : AppCompatActivity() {
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 exposureProgressLabel.text = "Length of Photo Session (in seconds): $progress"
+//                Log.d(TAG, "exposureSeekBar: onProgressChanged")
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
