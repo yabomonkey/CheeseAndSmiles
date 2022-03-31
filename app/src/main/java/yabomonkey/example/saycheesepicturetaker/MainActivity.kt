@@ -5,13 +5,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.ui.AppBarConfiguration
@@ -19,7 +19,7 @@ import yabomonkey.example.saycheesepicturetaker.databinding.ActivityMainBinding
 
 private const val TAG = "MainActivity"
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -34,6 +34,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
+
+        activateToolbar(false)
+
+        Log.d(TAG, "onCreate: Starts")
 
         // Request camera permissions
         if (!allPermissionsGranted()) {
@@ -81,6 +85,8 @@ class MainActivity : AppCompatActivity() {
 
         openShutterButton.setOnClickListener {
             val intent = Intent(this, OpenShutterActivity::class.java)
+            intent.putExtra(DELAY_LENGTH, delaySeekBar.progress)
+            intent.putExtra(EXPOSURE_LENGTH, exposureSeekBar.progress)
             startActivity(intent)
         }
 
