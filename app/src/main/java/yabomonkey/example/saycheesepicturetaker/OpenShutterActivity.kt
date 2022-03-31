@@ -56,10 +56,11 @@ class OpenShutterActivity : AppCompatActivity() {
 
             val imageAnalyzer = ImageAnalysis.Builder()
                 .build()
-                .also {
-                    it.setAnalyzer(cameraExecutor, SmileAnalyzer { numberOfSmiles ->
-                        Log.d("trash", "Smiling people: $numberOfSmiles")
-                    })
+                .also { it ->
+                    it.setAnalyzer(cameraExecutor, SmileAnalyzer { allSmiling ->
+                            if (allSmiling) takePhoto()
+                        }
+                    )
                 }
 
             // Select back camera as a default
