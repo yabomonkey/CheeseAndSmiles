@@ -26,6 +26,7 @@ class OpenShutterActivity : AppCompatActivity() {
 
     private lateinit var cameraExecutor: ExecutorService
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityOpenShutterBinding.inflate(layoutInflater)

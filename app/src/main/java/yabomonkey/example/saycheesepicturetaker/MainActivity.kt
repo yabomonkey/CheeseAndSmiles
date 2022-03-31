@@ -85,6 +85,8 @@ class MainActivity : BaseActivity() {
 
         openShutterButton.setOnClickListener {
             val intent = Intent(this, OpenShutterActivity::class.java)
+            intent.putExtra(DELAY_LENGTH, delaySeekBar.progress)
+            intent.putExtra(EXPOSURE_LENGTH, exposureSeekBar.progress)
             startActivity(intent)
         }
 

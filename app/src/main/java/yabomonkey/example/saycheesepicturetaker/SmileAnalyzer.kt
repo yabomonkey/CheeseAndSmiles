@@ -9,12 +9,17 @@ import com.google.mlkit.vision.face.FaceDetectorOptions
 
 private const val TAG = "SmileAnalyzer"
 
-class SmileAnalyzer(private val listener: (Any) -> Int) : ImageAnalysis.Analyzer {
+/** Helper type alias used for analysis use case callbacks */
+typealias SmileListener = (smiling: Boolean) -> Unit
+
+class SmileAnalyzer(private val listener: SmileListener? = null) : ImageAnalysis.Analyzer {
 
     override fun analyze(imageProxy: ImageProxy) {
+//        Log.d(TAG, ".analyze: called")
         val realTimeOpts = FaceDetectorOptions.Builder()
             .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
             .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
+            .enableTracking()
             .build()
 
         val mediaImage = imageProxy.image
@@ -22,26 +27,36 @@ class SmileAnalyzer(private val listener: (Any) -> Int) : ImageAnalysis.Analyzer
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
             val detector = FaceDetection.getClient(realTimeOpts)
             var numberOfSmiles = 0
+            var allSmiling = false
             val result = detector.process(image)
                 .addOnSuccessListener { faces ->
                     for (face in faces) {
+//                        Log.d(TAG, "Detected a face: ${face.trackingId}")
                         if (face.smilingProbability != null) {
-                            val smileProb = face.smilingProbability
-                            if (smileProb > 0.5) {
+                            if (face.smilingProbability > 0.4) {
+                                Log.d(TAG, "Detected a smile with probability: ${face.smilingProbability} and there are ${faces.size} faces detected")
                                 numberOfSmiles++
+
                             }
                         }
-                        Log.d(TAG, "Detected a face: $face")
+
                     }
+                    if (faces.size != 0 && faces.size == numberOfSmiles) {
+                        allSmiling = true
+                        Log.d(TAG, "Setting allSmiling to $allSmiling")
+                    }
+                    listener?.invoke(allSmiling)
                 }
                 .addOnFailureListener { e ->
                     // Task failed with an exception
                     // ...
                 }
 
-            listener(numberOfSmiles)
+
+
 
             imageProxy.close()
+//            Log.d(TAG, ".analyze: ends and closed the imageProxy")
         }
 
     }
