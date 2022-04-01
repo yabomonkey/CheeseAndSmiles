@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:max="15"
+        android:max="8"
         android:progress="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -25,8 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:max="5"
-        android:progress="1"
+        android:max="20"
+        android:progress="10"
+        android:min="5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/exposureTextView"
         app:layout_constraintTop_toBottomOf="@+id/exposureTextView" />
@@ -62,4 +63,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/exposureSeekBar"
         app:layout_constraintTop_toBottomOf="@+id/exposureSeekBar" />
+
+    <ImageButton
+        android:id="@+id/photo_view_button"
+        android:layout_width="@dimen/round_button_medium"
+        android:layout_height="@dimen/round_button_medium"
+        android:layout_marginBottom="@dimen/margin_xlarge"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:padding="@dimen/spacing_large"
+        android:scaleType="fitCenter"
+        android:background="@drawable/ic_outer_circle"
+        app:srcCompat="@drawable/ic_photo"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="@string/gallery_button_alt" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
