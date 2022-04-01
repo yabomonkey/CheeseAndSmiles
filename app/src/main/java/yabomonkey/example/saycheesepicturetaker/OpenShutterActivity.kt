@@ -3,8 +3,11 @@ package yabomonkey.example.saycheesepicturetaker
 import android.content.ContentValues
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
@@ -34,13 +37,19 @@ class OpenShutterActivity : AppCompatActivity() {
 
         Log.d(TAG, "onCreate called")
 
-        startCamera()
+        startCountdownTimer()
+        Handler().postDelayed(Runnable { startCamera() }, ((intent.getIntExtra(DELAY_LENGTH, 0))*1000).toLong())
+
+
 
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
     private fun startCamera() {
+        
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+
+
 
         cameraProviderFuture.addListener({
             // Used to bind the lifecycle of cameras to the lifecycle owner
@@ -59,8 +68,8 @@ class OpenShutterActivity : AppCompatActivity() {
                 .build()
                 .also { it ->
                     it.setAnalyzer(cameraExecutor, SmileAnalyzer { allSmiling ->
-                            if (allSmiling) takePhoto()
-                        }
+                        if (allSmiling) takePhoto()
+                    }
                     )
                 }
 
@@ -80,6 +89,8 @@ class OpenShutterActivity : AppCompatActivity() {
             }
 
         }, ContextCompat.getMainExecutor(this))
+
+
     }
 
     override fun onDestroy() {
@@ -127,6 +138,29 @@ class OpenShutterActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    private fun startCountdownTimer(){
+        var counter = intent.getIntExtra(DELAY_LENGTH, 0)
+        val delayTimerCountdown: TextView = findViewById(R.id.delayTimerCountdown)
+        val delayTimer: Long = ((counter)*1000).toLong()
+
+        object : CountDownTimer(delayTimer, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                if (counter == 1) {
+                    delayTimerCountdown.text = "Go"
+                } else {
+                    delayTimerCountdown.text = counter.toString()
+                }
+                counter--
+
+            }
+
+            override fun onFinish() {
+                delayTimerCountdown.text = ""
+            }
+        }.start()
+
     }
 
 }
