@@ -16,3 +16,5 @@ local.properties
 /.gradle/7.2/fileHashes/fileHashes.bin
 /.gradle/7.2/fileHashes/fileHashes.lock
 /.gradle/buildOutputCleanup/buildOutputCleanup.lock
+/.gradle/buildOutputCleanup/cache.properties
+/.gradle/buildOutputCleanup/outputFiles.bin

@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
@@ -15,17 +16,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.concurrent.schedule
 
 private const val TAG = "OpenShutterActivity"
 private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
 
+
 class OpenShutterActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityOpenShutterBinding
-
     private var imageCapture: ImageCapture? = null
-
     private lateinit var cameraExecutor: ExecutorService
-
+    private var uiTimer = Timer("uiTimer")
+    private var sysTimer = Timer("sysTimer")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +36,18 @@ class OpenShutterActivity : AppCompatActivity() {
 
         Log.d(TAG, "onCreate called")
 
-        startCamera()
+        //Start a timer based on the  and then launch the camera after the time has run
+        startCountdownTimer(intent.getIntExtra(DELAY_LENGTH, 0))
+        sysTimer.schedule(((intent.getIntExtra(DELAY_LENGTH, 0)) * 1000).toLong()) {
+            startCamera()
+        }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+
     }
 
     private fun startCamera() {
+
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
         cameraProviderFuture.addListener({
@@ -59,10 +67,11 @@ class OpenShutterActivity : AppCompatActivity() {
                 .build()
                 .also { it ->
                     it.setAnalyzer(cameraExecutor, SmileAnalyzer { allSmiling ->
-                            if (allSmiling) takePhoto()
-                        }
+                        if (allSmiling) takePhoto()
+                    }
                     )
                 }
+
 
             // Select back camera as a default
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
@@ -73,18 +82,38 @@ class OpenShutterActivity : AppCompatActivity() {
 
                 // Bind use cases to camera
                 cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageCapture, imageAnalyzer)
+                    this, cameraSelector, preview, imageCapture, imageAnalyzer
+                )
 
-            } catch(exc: Exception) {
+            } catch (exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
 
         }, ContextCompat.getMainExecutor(this))
+
+        //Start a timer based on the exposure slider setting and then launch the camera after the time has run
+        startCountdownTimer(intent.getIntExtra(EXPOSURE_LENGTH, 0))
+        sysTimer.schedule(((intent.getIntExtra(EXPOSURE_LENGTH, 0)) * 1000).toLong()) {
+            finish()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
+        uiTimer.cancel()
+        sysTimer.cancel()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+//        if (timer.) {
+//
+//        }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
     }
 
     private fun takePhoto() {
@@ -97,16 +126,18 @@ class OpenShutterActivity : AppCompatActivity() {
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
                 put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
             }
         }
 
         // Create output options object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions
-            .Builder(contentResolver,
+            .Builder(
+                contentResolver,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                contentValues)
+                contentValues
+            )
             .build()
 
         // Set up image capture listener, which is triggered after photo has
@@ -120,13 +151,30 @@ class OpenShutterActivity : AppCompatActivity() {
                 }
 
                 override fun
-                        onImageSaved(output: ImageCapture.OutputFileResults){
+                        onImageSaved(output: ImageCapture.OutputFileResults) {
                     val msg = "Photo capture succeeded: ${output.savedUri}"
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
                 }
             }
         )
+    }
+
+    private fun startCountdownTimer(secondsToCount: Int) {
+        var counter = secondsToCount
+        val delayTimerCountdown: TextView = findViewById(R.id.timerCountdown)
+
+        uiTimer.schedule(1000, 1000) {
+            runOnUiThread {
+                if (counter > 0) {
+                    delayTimerCountdown.text = counter.toString()
+                    counter--
+//                    Log.d(TAG, "The counter is $counter")
+                } else {
+                    delayTimerCountdown.text = ""
+                }
+            }
+        }
     }
 
 }
