@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+/.gradle/7.2/fileHashes/fileHashes.bin
+/.gradle/7.2/fileHashes/fileHashes.lock
+/.gradle/buildOutputCleanup/buildOutputCleanup.lock
