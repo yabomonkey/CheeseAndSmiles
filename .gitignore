@@ -19,3 +19,4 @@ local.properties
 /.gradle/buildOutputCleanup/cache.properties
 /.gradle/buildOutputCleanup/outputFiles.bin
 /.idea/misc.xml
+/.gradle/checksums/checksums.lock

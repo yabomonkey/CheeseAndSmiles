@@ -3,21 +3,24 @@ package yabomonkey.example.saycheesepicturetaker
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.SeekBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import androidx.navigation.ui.AppBarConfiguration
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import yabomonkey.example.saycheesepicturetaker.databinding.ActivityMainBinding
+import java.io.File
 
 private const val TAG = "MainActivity"
+val EXTENSION_WHITELIST = arrayOf("JPG")
 
 class MainActivity : BaseActivity() {
 
@@ -27,7 +30,12 @@ class MainActivity : BaseActivity() {
     private lateinit var delayProgressLabel: TextView
     private lateinit var exposureProgressLabel: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private lateinit var galleryThumbnail: ImageButton
+
+
+    private lateinit var outputDirectory: File
+
+   override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -90,6 +98,23 @@ class MainActivity : BaseActivity() {
             startActivity(intent)
         }
 
+
+
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume: Called")
+
+//        // In the background, load latest photo taken (if any) for gallery thumbnail
+//        lifecycleScope.launch(Dispatchers.IO) {
+//            outputDirectory.listFiles { file ->
+//                EXTENSION_WHITELIST.contains(file.extension.toUpperCase(Locale.ROOT))
+//            }?.maxOrNull()?.let {
+//                setGalleryThumbnail(Uri.fromFile(it))
+//            }
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -125,6 +150,23 @@ class MainActivity : BaseActivity() {
                     "Permissions not granted by the user.",
                     Toast.LENGTH_SHORT).show()
                 finish()
+            }
+        }
+    }
+
+    private fun setGalleryThumbnail(uri: Uri) {
+        // Run the operations in the view's thread
+        galleryThumbnail = findViewById(R.id.photo_view_button)
+        galleryThumbnail?.let { photoViewButton ->
+            photoViewButton.post {
+                // Remove thumbnail padding
+                photoViewButton.setPadding(resources.getDimension(R.dimen.stroke_small).toInt())
+
+                // Load thumbnail into circular button using Glide
+                Glide.with(photoViewButton)
+                    .load(uri)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(photoViewButton)
             }
         }
     }
