@@ -17,4 +17,9 @@
     <string name="exposure_timer">Exposure Timer</string>
     <string name="go_go_gadget_camera">Go go gadget camera</string>
     <string name="gallery_button_alt">Gallery</string>
+    <string name="back_button_alt">Back</string>
+    <string name="share_button_alt">Share</string>
+    <string name="delete_button_alt">Delete</string>
+    <string name="delete_dialog">Delete current photo?</string>
+    <string name="delete_title">Confirm</string>
 </resources>
