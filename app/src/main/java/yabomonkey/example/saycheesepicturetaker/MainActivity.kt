@@ -37,7 +37,9 @@ class MainActivity : BaseActivity() {
 
     private lateinit var galleryThumbnail: ImageButton
 
-   override fun onCreate(savedInstanceState: Bundle?) {
+    private var imagesInGallery: Boolean = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -99,6 +101,14 @@ class MainActivity : BaseActivity() {
             intent.putExtra(EXPOSURE_LENGTH, exposureSeekBar.progress)
             startActivity(intent)
         }
+
+       galleryThumbnail = findViewById(R.id.photo_view_button)
+       galleryThumbnail.setOnClickListener {
+           if (imagesInGallery) {
+               val intent = Intent(this, OpenGalleryActivity::class.java)
+               startActivity(intent)
+           }
+       }
     }
 
     override fun onResume() {
@@ -163,6 +173,8 @@ class MainActivity : BaseActivity() {
             val columnIndexID = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
             val imageId: Long = cursor.getLong(columnIndexID)
             val imageURI = Uri.withAppendedPath(uriExternal, "" + imageId)
+
+            imagesInGallery = true
 
             // Run the operations in the view's thread
             galleryThumbnail = findViewById(R.id.photo_view_button)
