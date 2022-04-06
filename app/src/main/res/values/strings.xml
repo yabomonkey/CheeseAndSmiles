@@ -16,4 +16,5 @@
     <string name="delay_timer">Delay Timer</string>
     <string name="exposure_timer">Exposure Timer</string>
     <string name="go_go_gadget_camera">Go go gadget camera</string>
+    <string name="gallery_button_alt">Gallery</string>
 </resources>

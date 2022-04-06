@@ -3,21 +3,29 @@ package yabomonkey.example.saycheesepicturetaker
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.SeekBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.ui.AppBarConfiguration
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import yabomonkey.example.saycheesepicturetaker.databinding.ActivityMainBinding
 
 private const val TAG = "MainActivity"
+const val APP_TAG = "Smile-Finder"
+
 
 class MainActivity : BaseActivity() {
 
@@ -27,7 +35,9 @@ class MainActivity : BaseActivity() {
     private lateinit var delayProgressLabel: TextView
     private lateinit var exposureProgressLabel: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private lateinit var galleryThumbnail: ImageButton
+
+   override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -89,7 +99,14 @@ class MainActivity : BaseActivity() {
             intent.putExtra(EXPOSURE_LENGTH, exposureSeekBar.progress)
             startActivity(intent)
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
+        // In the background, load latest photo taken (if any) for gallery thumbnail
+        lifecycleScope.launch(Dispatchers.IO) {
+            setGalleryThumbnail()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -127,6 +144,42 @@ class MainActivity : BaseActivity() {
                 finish()
             }
         }
+    }
+
+    private fun setGalleryThumbnail() {
+        val uriExternal: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+
+        val projection = arrayOf(
+            MediaStore.Images.ImageColumns._ID,
+            MediaStore.Images.Media._ID,
+            MediaStore.Images.ImageColumns.DATE_ADDED,
+            MediaStore.Images.ImageColumns.MIME_TYPE
+        )
+        val cursor: Cursor = contentResolver.query(uriExternal, projection, null,
+            null, MediaStore.Images.ImageColumns.DATE_ADDED + " DESC"
+        )!!
+
+        if (cursor.moveToFirst()) {
+            val columnIndexID = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
+            val imageId: Long = cursor.getLong(columnIndexID)
+            val imageURI = Uri.withAppendedPath(uriExternal, "" + imageId)
+
+            // Run the operations in the view's thread
+            galleryThumbnail = findViewById(R.id.photo_view_button)
+            galleryThumbnail?.let { photoViewButton ->
+                photoViewButton.post {
+                    // Remove thumbnail padding
+                    photoViewButton.setPadding(resources.getDimension(R.dimen.stroke_small).toInt())
+
+                    // Load thumbnail into circular button using Glide
+                    Glide.with(photoViewButton)
+                        .load(imageURI)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(photoViewButton)
+                }
+            }
+        }
+        cursor.close()
     }
 
     companion object {
