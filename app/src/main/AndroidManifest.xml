@@ -31,6 +31,13 @@
             android:theme="@style/Theme.SayCheesePictureTaker.NoActionBar"
             android:parentActivityName=".MainActivity">
         </activity>
+        <activity
+            android:name=".OpenGalleryActivity"
+            android:exported="false"
+            android:label="OpenGalleryActivity"
+            android:theme="@style/Theme.SayCheesePictureTaker.NoActionBar"
+            android:parentActivityName=".MainActivity">
+        </activity>
         </application>
 
 </manifest>
