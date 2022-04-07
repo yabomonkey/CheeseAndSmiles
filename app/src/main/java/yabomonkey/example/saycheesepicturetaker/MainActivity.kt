@@ -15,12 +15,9 @@ import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.ui.AppBarConfiguration
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import yabomonkey.example.saycheesepicturetaker.databinding.ActivityMainBinding
 
 private const val TAG = "MainActivity"
@@ -113,10 +110,7 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        // In the background, load latest photo taken (if any) for gallery thumbnail
-        lifecycleScope.launch(Dispatchers.IO) {
-            setGalleryThumbnail()
-        }
+        setGalleryThumbnail()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
