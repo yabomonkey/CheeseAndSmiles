@@ -15,7 +15,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import yabomonkey.example.saycheesepicturetaker.databinding.ActivityGalleryBinding
 import yabomonkey.example.saycheesepicturetaker.utils.padWithDisplayCutout
+import yabomonkey.example.saycheesepicturetaker.utils.showImmersive
 import java.io.File
+import java.util.*
 
 private const val TAG = "OpenGalleryActivity"
 
@@ -85,7 +87,7 @@ class OpenGalleryActivity : AppCompatActivity() {
 
             mediaList.getOrNull(viewBinding.photoViewPager.currentItem)?.let { mediaFile ->
 
-                AlertDialog.Builder(applicationContext, android.R.style.Theme_Material_Dialog)
+                AlertDialog.Builder(this, R.style.Theme_SayCheesePictureTaker_AlertDialogCustom)
                     .setTitle(getString(R.string.delete_title))
                     .setMessage(getString(R.string.delete_dialog))
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -110,7 +112,7 @@ class OpenGalleryActivity : AppCompatActivity() {
                     }
 
                     .setNegativeButton(android.R.string.no, null)
-                    .create()
+                    .create().showImmersive()
             }
         }
     }
