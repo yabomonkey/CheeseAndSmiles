@@ -30,4 +30,7 @@
     <style name="Theme.SayCheesePictureTaker.AlertDialogCustom" parent="Theme.MaterialComponents.Dialog.Alert">
         <item name="android:windowNoTitle">true</item>
     </style>
+
+
+
 </resources>

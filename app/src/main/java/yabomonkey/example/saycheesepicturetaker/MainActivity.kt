@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
@@ -50,14 +49,12 @@ class MainActivity : BaseActivity() {
 
         activateToolbar(false)
 
-        Log.d(TAG, "onCreate: Starts")
-
         // Request camera permissions
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
-        
+
         val delaySeekBar: SeekBar = findViewById(R.id.delaySeekBar)
 
         delayProgressLabel = findViewById(R.id.delayTextView)
@@ -94,23 +91,43 @@ class MainActivity : BaseActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
-        var openShutterButton: Button = findViewById(R.id.openShutterButton)
+//        val cameraSelectorSpinner: Spinner = findViewById(R.id.camera_selector)
+//        val cameras = arrayOf("Back Camera", "Front Camera")
+//
+//        cameraSelectorSpinner.adapter = ArrayAdapter(this, R.layout.camera_spinner_dropdown, cameras)
+//
+//        cameraSelectorSpinner.onItemSelectedListener = object :
+//            AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(parent: AdapterView<*>,
+//                                        view: View, position: Int, id: Long) {
+//                Toast.makeText(this@MainActivity,
+//                    getString(R.string.selected_item) + " " +
+//                            "" + cameras[position], Toast.LENGTH_SHORT).show()
+//            }
+//
+//            override fun onNothingSelected(parent: AdapterView<*>) {
+//                // write code to perform some action
+//            }
+//        }
 
-        openShutterButton.setOnClickListener {
-            val intent = Intent(this, OpenShutterActivity::class.java)
-            intent.putExtra(DELAY_LENGTH, delaySeekBar.progress)
-            intent.putExtra(EXPOSURE_LENGTH, exposureSeekBar.progress)
-            startActivity(intent)
+            var openShutterButton: Button = findViewById(R.id.openShutterButton)
+
+            openShutterButton.setOnClickListener {
+                val intent = Intent(this, OpenShutterActivity::class.java)
+                intent.putExtra(DELAY_LENGTH, delaySeekBar.progress)
+                intent.putExtra(EXPOSURE_LENGTH, exposureSeekBar.progress)
+                startActivity(intent)
+            }
+
+            galleryThumbnail = findViewById(R.id.photo_view_button)
+            galleryThumbnail.setOnClickListener {
+                if (imagesInGallery) {
+                    val intent = Intent(this, OpenGalleryActivity::class.java)
+                    startActivity(intent)
+                }
+            }
         }
 
-       galleryThumbnail = findViewById(R.id.photo_view_button)
-       galleryThumbnail.setOnClickListener {
-           if (imagesInGallery) {
-               val intent = Intent(this, OpenGalleryActivity::class.java)
-               startActivity(intent)
-           }
-       }
-    }
 
     override fun onResume() {
         super.onResume()
@@ -180,7 +197,7 @@ class MainActivity : BaseActivity() {
 
             // Run the operations in the view's thread
             galleryThumbnail = findViewById(R.id.photo_view_button)
-            galleryThumbnail?.let { photoViewButton ->
+            galleryThumbnail.let { photoViewButton ->
                 photoViewButton.post {
                     // Remove thumbnail padding
                     photoViewButton.setPadding(resources.getDimension(R.dimen.stroke_small).toInt())
