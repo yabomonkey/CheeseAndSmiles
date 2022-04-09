@@ -69,7 +69,7 @@ class OpenGalleryActivity : AppCompatActivity() {
                         .getMimeTypeFromExtension(mediaFile.extension)
                     // Get URI from our FileProvider implementation
                     val uri = FileProvider.getUriForFile(
-                        applicationContext, BuildConfig.APPLICATION_ID + ".provider", mediaFile)
+                        Objects.requireNonNull(applicationContext), BuildConfig.APPLICATION_ID + ".provider", mediaFile)
                     // Set the appropriate intent extra, type, action and flags
                     putExtra(Intent.EXTRA_STREAM, uri)
                     type = mediaType
