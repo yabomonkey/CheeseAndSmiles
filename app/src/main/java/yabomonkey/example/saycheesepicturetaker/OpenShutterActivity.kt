@@ -17,10 +17,9 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.concurrent.schedule
-
-private const val TAG = "OpenShutterActivity"
-private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
-
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 
 class OpenShutterActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityOpenShutterBinding
@@ -50,6 +49,16 @@ class OpenShutterActivity : AppCompatActivity() {
 
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
+        // Get screen metrics used to setup camera for full screen resolution
+        val screenAspectRatio: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val metrics = windowManager.currentWindowMetrics.bounds
+            aspectRatio(metrics.width(), metrics.height())
+        } else {
+            0
+        }
+
+        val rotation = viewBinding.viewFinder.display.rotation
+
         cameraProviderFuture.addListener({
             // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
@@ -61,7 +70,14 @@ class OpenShutterActivity : AppCompatActivity() {
                     it.setSurfaceProvider(viewBinding.viewFinder.surfaceProvider)
                 }
 
-            imageCapture = ImageCapture.Builder().build()
+            imageCapture = ImageCapture.Builder()
+                // We request aspect ratio but no resolution to match preview config, but letting
+                // CameraX optimize for whatever specific resolution best fits our use cases
+                .setTargetAspectRatio(screenAspectRatio)
+                // Set initial target rotation, we will have to call this again if rotation changes
+                // during the lifecycle of this use case
+                .setTargetRotation(rotation)
+                .build()
 
             val imageAnalyzer = ImageAnalysis.Builder()
                 .build()
@@ -177,4 +193,29 @@ class OpenShutterActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     *  [androidx.camera.core.ImageAnalysis.Builder] requires enum value of
+     *  [androidx.camera.core.AspectRatio]. Currently it has values of 4:3 & 16:9.
+     *
+     *  Detecting the most suitable ratio for dimensions provided in @params by counting absolute
+     *  of preview ratio to one of the provided values.
+     *
+     *  @param width - preview width
+     *  @param height - preview height
+     *  @return suitable aspect ratio
+     */
+    private fun aspectRatio(width: Int, height: Int): Int {
+        val previewRatio = max(width, height).toDouble() / min(width, height)
+        if (abs(previewRatio - RATIO_4_3_VALUE) <= abs(previewRatio - RATIO_16_9_VALUE)) {
+            return AspectRatio.RATIO_4_3
+        }
+        return AspectRatio.RATIO_16_9
+    }
+
+    companion object {
+        private const val TAG = "OpenShutterActivity"
+        private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
+        private const val RATIO_4_3_VALUE = 4.0 / 3.0
+        private const val RATIO_16_9_VALUE = 16.0 / 9.0
+    }
 }

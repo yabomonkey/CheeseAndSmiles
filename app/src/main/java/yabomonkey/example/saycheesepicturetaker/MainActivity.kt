@@ -14,18 +14,19 @@ import android.view.MenuItem
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.setPadding
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.ui.AppBarConfiguration
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import yabomonkey.example.saycheesepicturetaker.databinding.ActivityMainBinding
 
 private const val TAG = "MainActivity"
 const val APP_TAG = "Smile-Finder"
 
+private const val IMMERSIVE_FLAG_TIMEOUT = 500L
 
 class MainActivity : BaseActivity() {
 
@@ -37,7 +38,9 @@ class MainActivity : BaseActivity() {
 
     private lateinit var galleryThumbnail: ImageButton
 
-   override fun onCreate(savedInstanceState: Bundle?) {
+    private var imagesInGallery: Boolean = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -99,14 +102,23 @@ class MainActivity : BaseActivity() {
             intent.putExtra(EXPOSURE_LENGTH, exposureSeekBar.progress)
             startActivity(intent)
         }
+
+       galleryThumbnail = findViewById(R.id.photo_view_button)
+       galleryThumbnail.setOnClickListener {
+           if (imagesInGallery) {
+               val intent = Intent(this, OpenGalleryActivity::class.java)
+               startActivity(intent)
+           }
+       }
     }
 
     override fun onResume() {
         super.onResume()
-        // In the background, load latest photo taken (if any) for gallery thumbnail
-        lifecycleScope.launch(Dispatchers.IO) {
-            setGalleryThumbnail()
-        }
+        setGalleryThumbnail()
+
+        binding.root.postDelayed({
+            hideSystemUI()
+        }, IMMERSIVE_FLAG_TIMEOUT)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -164,6 +176,8 @@ class MainActivity : BaseActivity() {
             val imageId: Long = cursor.getLong(columnIndexID)
             val imageURI = Uri.withAppendedPath(uriExternal, "" + imageId)
 
+            imagesInGallery = true
+
             // Run the operations in the view's thread
             galleryThumbnail = findViewById(R.id.photo_view_button)
             galleryThumbnail?.let { photoViewButton ->
@@ -193,5 +207,13 @@ class MainActivity : BaseActivity() {
                     add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 }
             }.toTypedArray()
+    }
+
+    private fun hideSystemUI() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowInsetsControllerCompat(window, binding.root).let { controller ->
+            controller.hide(WindowInsetsCompat.Type.systemBars())
+            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 }
