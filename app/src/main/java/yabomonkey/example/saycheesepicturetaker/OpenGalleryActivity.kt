@@ -1,9 +1,7 @@
 package yabomonkey.example.saycheesepicturetaker
 
 import android.content.Intent
-import android.database.Cursor
 import android.media.MediaScannerConnection
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -39,33 +37,21 @@ class OpenGalleryActivity : AppCompatActivity() {
         viewBinding = ActivityGalleryBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        Log.d(TAG, "onCreate called")
-
-        val uriExternal: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-
         val projection = arrayOf(
             MediaStore.Images.ImageColumns._ID,
             MediaStore.Images.Media._ID,
             MediaStore.Images.ImageColumns.DATE_ADDED,
-            MediaStore.Images.ImageColumns.MIME_TYPE
+            MediaStore.Images.ImageColumns.MIME_TYPE,
+            MediaStore.Images.Media.DATA
         )
 
-        val cursor: Cursor = contentResolver.query(uriExternal, projection, null,
+        contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null,
             null, MediaStore.Images.ImageColumns.DATE_ADDED + " DESC"
-        )!!
-
-        while (cursor.moveToNext()) {
-            val columnIndexID = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
-            val imageId: Long = cursor.getLong(columnIndexID)
-            val imageURI = Uri.withAppendedPath(uriExternal, "" + imageId)
-
-            mediaList.add(cursor.position, File(imageURI.path))
-
+        )!!.use {
+            while (it.moveToNext()) {
+                mediaList.add(it.position, File(it.getString(it.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA))))
+            }
         }
-
-        cursor.close()
-
-        Log.d(TAG, "The mediaList has ${mediaList.toList()} entries")
 
         viewBinding.backButton.setOnClickListener {
             finish()
@@ -148,7 +134,5 @@ class OpenGalleryActivity : AppCompatActivity() {
             // Use extension method to pad "inside" view containing UI using display cutout's bounds
             viewBinding.cutoutSafeArea.padWithDisplayCutout()
         }
-
-
     }
 }
