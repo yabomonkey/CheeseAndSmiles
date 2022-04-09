@@ -14,6 +14,9 @@ import android.view.MenuItem
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.setPadding
 import androidx.navigation.ui.AppBarConfiguration
 import com.bumptech.glide.Glide
@@ -23,6 +26,7 @@ import yabomonkey.example.saycheesepicturetaker.databinding.ActivityMainBinding
 private const val TAG = "MainActivity"
 const val APP_TAG = "Smile-Finder"
 
+private const val IMMERSIVE_FLAG_TIMEOUT = 500L
 
 class MainActivity : BaseActivity() {
 
@@ -111,6 +115,10 @@ class MainActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         setGalleryThumbnail()
+
+        binding.root.postDelayed({
+            hideSystemUI()
+        }, IMMERSIVE_FLAG_TIMEOUT)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -199,5 +207,13 @@ class MainActivity : BaseActivity() {
                     add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 }
             }.toTypedArray()
+    }
+
+    private fun hideSystemUI() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowInsetsControllerCompat(window, binding.root).let { controller ->
+            controller.hide(WindowInsetsCompat.Type.systemBars())
+            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 }
