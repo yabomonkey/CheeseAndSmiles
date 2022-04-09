@@ -17,9 +17,17 @@
     <style name="Theme.SayCheesePictureTaker.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:immersive">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="Theme.SayCheesePictureTaker.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.SayCheesePictureTaker.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.SayCheesePictureTaker.AlertDialogCustom" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>
