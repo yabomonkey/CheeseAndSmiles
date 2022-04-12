@@ -48,7 +48,7 @@
         android:id="@+id/exposureTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:text="@string/exposure_timer"
         app:layout_constraintStart_toStartOf="@+id/delaySeekBar"
         app:layout_constraintTop_toBottomOf="@+id/delaySeekBar" />
@@ -57,12 +57,12 @@
         android:id="@+id/openShutterButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:text="@string/go_go_gadget_camera"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/exposureSeekBar"
-        app:layout_constraintTop_toBottomOf="@+id/exposureSeekBar" />
+        app:layout_constraintBottom_toBottomOf="@+id/photo_view_button"
+        app:layout_constraintEnd_toStartOf="@+id/photo_view_button"
+        app:layout_constraintStart_toStartOf="@+id/smileConfidenceTextView"
+        app:layout_constraintTop_toTopOf="@+id/photo_view_button" />
 
     <ImageButton
         android:id="@+id/photo_view_button"
@@ -77,5 +77,77 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:srcCompat="@drawable/ic_photo" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/camera_button_group"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        app:checkedButton="@id/backCamMaterialButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cameraTextView"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/backCamMaterialButton"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="177dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/camera_selector_back" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/frontCamMaterialButton"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="177dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="0dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/camera_selector_front" />
+
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+
+
+    <TextView
+        android:id="@+id/cameraTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="cameraTextView"
+        app:layout_constraintStart_toStartOf="@+id/exposureSeekBar"
+        app:layout_constraintTop_toBottomOf="@+id/exposureSeekBar" />
+
+    <me.angrybyte.circularslider.CircularSlider
+        android:id="@+id/circular"
+        android:layout_width="0dp"
+        android:layout_height="195dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:padding="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/smileConfidenceTextView" />
+
+    <TextView
+        android:id="@+id/smileConfidenceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="smileConfidenceTextView"
+        app:layout_constraintStart_toStartOf="@+id/cameraTextView"
+        app:layout_constraintTop_toBottomOf="@+id/camera_button_group" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

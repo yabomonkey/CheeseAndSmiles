@@ -15,7 +15,7 @@
     <string name="stop_capture">Stop Capture</string>
     <string name="delay_timer">Delay Timer</string>
     <string name="exposure_timer">Exposure Timer</string>
-    <string name="go_go_gadget_camera">Go go gadget camera</string>
+    <string name="go_go_gadget_camera">Start Smile Finding Camera</string>
     <string name="gallery_button_alt">Gallery</string>
     <string name="back_button_alt">Back</string>
     <string name="share_button_alt">Share</string>
@@ -23,4 +23,8 @@
     <string name="delete_dialog">Delete current photo?</string>
     <string name="delete_title">Confirm</string>
     <string name="share_hint">Share using</string>
+    <string name="selected_item">Selected Item:</string>
+    <string name="camera_selector_back">Rear Camera</string>
+    <string name="camera_selector_front">Selfie Camera</string>
+    <string name="cameraSelectedLabelText">Camera to be used: </string>
 </resources>
