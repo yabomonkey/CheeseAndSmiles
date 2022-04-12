@@ -90,7 +90,8 @@ class OpenShutterActivity : AppCompatActivity() {
 
 
             // Select back camera as a default
-            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+            val cameraSelector = CameraSelector.Builder().requireLensFacing(intent.getIntExtra(
+                SELECTED_CAMERA, 0)).build()
 
             try {
                 // Unbind use cases before rebinding

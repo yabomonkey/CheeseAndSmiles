@@ -79,7 +79,7 @@
         app:srcCompat="@drawable/ic_photo" />
 
     <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/toggle_button_group"
+        android:id="@+id/camera_button_group"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="24dp"
@@ -90,6 +90,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cameraTextView"
+        app:selectionRequired="true"
         app:singleSelection="true">
 
         <com.google.android.material.button.MaterialButton
@@ -147,6 +148,6 @@
         android:layout_marginTop="24dp"
         android:text="smileConfidenceTextView"
         app:layout_constraintStart_toStartOf="@+id/cameraTextView"
-        app:layout_constraintTop_toBottomOf="@+id/toggle_button_group" />
+        app:layout_constraintTop_toBottomOf="@+id/camera_button_group" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
