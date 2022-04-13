@@ -10,6 +10,8 @@ private val TAG = "BaseActivity"
 internal const val  DELAY_LENGTH = "DELAY_LENGTH"
 internal const val  EXPOSURE_LENGTH = "EXPOSURE_LENGTH"
 internal const val  SELECTED_CAMERA = "SELECTED_CAMERA"
+internal const val  SMILE_PERCENTAGE = "SMILE_PERCENTAGE"
+internal const val IMMERSIVE_FLAG_TIMEOUT = 500L
 
 open class BaseActivity : AppCompatActivity() {
 

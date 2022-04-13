@@ -82,7 +82,7 @@ class OpenShutterActivity : AppCompatActivity() {
             val imageAnalyzer = ImageAnalysis.Builder()
                 .build()
                 .also { it ->
-                    it.setAnalyzer(cameraExecutor, SmileAnalyzer { allSmiling ->
+                    it.setAnalyzer(cameraExecutor, SmileAnalyzer(intent.getIntExtra(SMILE_PERCENTAGE, 0)) { allSmiling ->
                         if (allSmiling) takePhoto()
                     }
                     )
