@@ -25,12 +25,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
+import com.ramotion.fluidslider.FluidSlider
 import yabomonkey.example.saycheesepicturetaker.databinding.ActivityMainBinding
 
 private const val TAG = "MainActivity"
 const val APP_TAG = "Smile-Finder"
-
-private const val IMMERSIVE_FLAG_TIMEOUT = 500L
 
 class MainActivity : BaseActivity() {
 
@@ -40,6 +39,7 @@ class MainActivity : BaseActivity() {
     private lateinit var delayProgressLabel: TextView
     private lateinit var exposureProgressLabel: TextView
     private lateinit var cameraSelectedLabel: TextView
+    private lateinit var smileConfidenceLabel: TextView
 
     private lateinit var cameraLabelString: String
 
@@ -47,7 +47,7 @@ class MainActivity : BaseActivity() {
     private var imagesInGallery: Boolean = false
 
     private var cameraProvider: ProcessCameraProvider? = null
-    private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
+
     private lateinit var cameraSelectionButtons: MaterialButtonToggleGroup
     private lateinit var backCamMaterialButton: MaterialButton
     private lateinit var frontCamMaterialButton: MaterialButton
@@ -133,6 +133,26 @@ class MainActivity : BaseActivity() {
             cameraSelectedLabel.text = cameraLabelString
         }
 
+        val maxSlider = 100
+        val minSlider = 20
+        val totalSlider = maxSlider - minSlider
+
+        val smileSlider = findViewById<FluidSlider>(R.id.smileFluidSlider)
+        smileSlider.position = 0.5f
+        smileSlider.startText ="Barely Smiling"
+        smileSlider.endText = "Big Cheesy Smile"
+        var smileSliderPosition = "${minSlider + (totalSlider  * smileSlider.position).toInt()}"
+        var smileConfidenceString: String = getString(R.string.smileConfidenceLabelText) + " " + smileSliderPosition
+        smileConfidenceLabel = findViewById(R.id.smileConfidenceTextView)
+        smileConfidenceLabel.text = smileConfidenceString
+
+        smileSlider.bubbleText = ""
+        smileSlider.positionListener = {
+            pos -> smileSliderPosition = "${minSlider + (totalSlider  * pos).toInt()}"
+            smileConfidenceString = getString(R.string.smileConfidenceLabelText) + " " + smileSliderPosition
+            smileConfidenceLabel.text = smileConfidenceString
+        }
+
         var openShutterButton: Button = findViewById(R.id.openShutterButton)
 
         openShutterButton.setOnClickListener {
@@ -145,6 +165,7 @@ class MainActivity : BaseActivity() {
             intent.putExtra(DELAY_LENGTH, delaySeekBar.progress)
             intent.putExtra(EXPOSURE_LENGTH, exposureSeekBar.progress)
             intent.putExtra(SELECTED_CAMERA, selectedCamera)
+            intent.putExtra(SMILE_PERCENTAGE, smileSliderPosition.toInt())
             startActivity(intent)
         }
 

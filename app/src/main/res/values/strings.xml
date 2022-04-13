@@ -26,5 +26,6 @@
     <string name="selected_item">Selected Item:</string>
     <string name="camera_selector_back">Rear Camera</string>
     <string name="camera_selector_front">Selfie Camera</string>
-    <string name="cameraSelectedLabelText">Camera to be used: </string>
+    <string name="cameraSelectedLabelText">Camera to be used:</string>
+    <string name="smileConfidenceLabelText">How big does everyone need to smile (%):</string>
 </resources>
