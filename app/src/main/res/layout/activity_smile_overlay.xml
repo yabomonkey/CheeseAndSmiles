@@ -19,4 +19,13 @@
 
     </androidx.camera.view.PreviewView>
 
+    <yabomonkey.example.saycheesepicturetaker.utils.GraphicOverlay
+        android:id="@+id/cameraDrawingOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/overlayViewFinder"
+        app:layout_constraintEnd_toEndOf="@+id/overlayViewFinder"
+        app:layout_constraintStart_toStartOf="@+id/overlayViewFinder"
+        app:layout_constraintTop_toTopOf="@+id/overlayViewFinder" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
