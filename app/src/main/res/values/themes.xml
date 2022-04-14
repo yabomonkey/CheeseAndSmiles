@@ -39,5 +39,6 @@
     </style>
     <style name="Theme.SayCheesePictureTaker.DarkButtons" parent="Theme.SayCheesePictureTaker">
         <item name="colorPrimary">@color/colorLightAccent</item>
+        <item name="colorOnPrimary">@color/black</item>
     </style>
 </resources>
