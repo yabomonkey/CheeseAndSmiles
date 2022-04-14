@@ -16,4 +16,5 @@
     <style name="Theme.SayCheesePictureTaker.BrightButtons" parent="Theme.SayCheesePictureTaker">
         <item name="colorPrimary">@color/colorAccent</item>
     </style>
+
 </resources>
