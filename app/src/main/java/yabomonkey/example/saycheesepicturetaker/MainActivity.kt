@@ -134,7 +134,7 @@ class MainActivity : BaseActivity() {
         }
 
         val maxSlider = 100
-        val minSlider = 20
+        val minSlider = 0
         val totalSlider = maxSlider - minSlider
 
         val smileSlider = findViewById<FluidSlider>(R.id.smileFluidSlider)
@@ -151,6 +151,13 @@ class MainActivity : BaseActivity() {
             pos -> smileSliderPosition = "${minSlider + (totalSlider  * pos).toInt()}"
             smileConfidenceString = getString(R.string.smileConfidenceLabelText) + " " + smileSliderPosition
             smileConfidenceLabel.text = smileConfidenceString
+        }
+
+        var smileOverlayButton: Button = findViewById(R.id.smileOverlayButton)
+
+        smileOverlayButton.setOnClickListener {
+            val intent = Intent(this, OpenSmileOverlayActivity::class.java)
+            startActivity(intent)
         }
 
         var openShutterButton: Button = findViewById(R.id.openShutterButton)

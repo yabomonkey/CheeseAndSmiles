@@ -25,7 +25,6 @@ import com.google.mlkit.vision.face.*
 import yabomonkey.example.saycheesepicturetaker.utils.GraphicOverlay
 import java.util.*
 
-/** Face Detector Demo.  */
 class FaceDetectorProcessor(context: Context, detectorOptions: FaceDetectorOptions?) :
   VisionProcessorBase<List<Face>>(context),
   VisionImageProcessor {

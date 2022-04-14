@@ -40,7 +40,7 @@ class SmileAnalyzer(private val smilePercentage: Int, private val listener: Smil
                     for (face in faces) {
                         Log.d(TAG, "Detected a face: ${face.trackingId} with smile: ${face.smilingProbability} and the minimum detect is ${smilePercentage.toFloat()}")
                         if (face.smilingProbability != null) {
-                            if (face.smilingProbability > smilePercentage.toFloat()/100) {
+                            if (face.smilingProbability!! > smilePercentage.toFloat()/100) {
                                 Log.d(TAG, "Detected a smile with probability: ${face.smilingProbability} and there are ${faces.size} faces detected")
                                 numberOfSmiles++
 

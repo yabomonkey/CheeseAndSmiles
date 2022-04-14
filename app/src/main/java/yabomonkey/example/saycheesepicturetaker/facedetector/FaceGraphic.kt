@@ -20,12 +20,15 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import com.google.mlkit.vision.face.Face
+import com.google.mlkit.vision.face.FaceContour
 import com.google.mlkit.vision.face.FaceLandmark
 import com.google.mlkit.vision.face.FaceLandmark.LandmarkType
 import yabomonkey.example.saycheesepicturetaker.utils.GraphicOverlay
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.max
+
+private const val TAG = "FaceGraphic"
 
 /**
  * Graphic instance for rendering face position, contour, and landmarks within the associated
@@ -84,53 +87,10 @@ class FaceGraphic constructor(overlay: GraphicOverlay?, private val face: Face) 
         max(
           textWidth,
           idPaints[colorID].measureText(
-            String.format(Locale.US, "Happiness: %.2f", face.smilingProbability)
+            String.format(Locale.US, "Smiling: %.2f", face.smilingProbability)
           )
         )
     }
-    if (face.leftEyeOpenProbability != null) {
-      yLabelOffset -= lineHeight
-      textWidth =
-        max(
-          textWidth,
-          idPaints[colorID].measureText(
-            String.format(Locale.US, "Left eye open: %.2f", face.leftEyeOpenProbability)
-          )
-        )
-    }
-    if (face.rightEyeOpenProbability != null) {
-      yLabelOffset -= lineHeight
-      textWidth =
-        max(
-          textWidth,
-          idPaints[colorID].measureText(
-            String.format(Locale.US, "Right eye open: %.2f", face.rightEyeOpenProbability)
-          )
-        )
-    }
-
-    yLabelOffset = yLabelOffset - 3 * lineHeight
-    textWidth =
-      Math.max(
-        textWidth,
-        idPaints[colorID].measureText(
-          String.format(Locale.US, "EulerX: %.2f", face.headEulerAngleX)
-        )
-      )
-    textWidth =
-      Math.max(
-        textWidth,
-        idPaints[colorID].measureText(
-          String.format(Locale.US, "EulerY: %.2f", face.headEulerAngleY)
-        )
-      )
-    textWidth =
-      Math.max(
-        textWidth,
-        idPaints[colorID].measureText(
-          String.format(Locale.US, "EulerZ: %.2f", face.headEulerAngleZ)
-        )
-      )
 
     // Draw labels
     canvas.drawRect(
@@ -149,13 +109,15 @@ class FaceGraphic constructor(overlay: GraphicOverlay?, private val face: Face) 
 
     // Draws all face contours.
     for (contour in face.allContours) {
-      for (point in contour.points) {
-        canvas.drawCircle(
-          translateX(point.x),
-          translateY(point.y),
-          FACE_POSITION_RADIUS,
-          facePositionPaint
-        )
+      when (contour.faceContourType) {
+        in listOf(FaceContour.LOWER_LIP_BOTTOM, FaceContour.LOWER_LIP_TOP, FaceContour.UPPER_LIP_BOTTOM, FaceContour.UPPER_LIP_TOP) -> for (point in contour.points) {
+          canvas.drawCircle(
+            translateX(point.x),
+            translateY(point.y),
+            FACE_POSITION_RADIUS,
+            facePositionPaint
+          )
+        }
       }
     }
 
@@ -171,15 +133,6 @@ class FaceGraphic constructor(overlay: GraphicOverlay?, private val face: Face) 
     }
 
     val leftEye = face.getLandmark(FaceLandmark.LEFT_EYE)
-    if (face.leftEyeOpenProbability != null) {
-      canvas.drawText(
-        "Left eye open: " + String.format(Locale.US, "%.2f", face.leftEyeOpenProbability),
-        left,
-        top + yLabelOffset,
-        idPaints[colorID]
-      )
-      yLabelOffset += lineHeight
-    }
     if (leftEye != null) {
       val leftEyeLeft =
         translateX(leftEye.position.x) - idPaints[colorID].measureText("Left Eye") / 2.0f
@@ -199,15 +152,6 @@ class FaceGraphic constructor(overlay: GraphicOverlay?, private val face: Face) 
     }
 
     val rightEye = face.getLandmark(FaceLandmark.RIGHT_EYE)
-    if (face.rightEyeOpenProbability != null) {
-      canvas.drawText(
-        "Right eye open: " + String.format(Locale.US, "%.2f", face.rightEyeOpenProbability),
-        left,
-        top + yLabelOffset,
-        idPaints[colorID]
-      )
-      yLabelOffset += lineHeight
-    }
     if (rightEye != null) {
       val rightEyeLeft =
         translateX(rightEye.position.x) - idPaints[colorID].measureText("Right Eye") / 2.0f
@@ -225,12 +169,6 @@ class FaceGraphic constructor(overlay: GraphicOverlay?, private val face: Face) 
         idPaints[colorID]
       )
     }
-
-    canvas.drawText("EulerX: " + face.headEulerAngleX, left, top + yLabelOffset, idPaints[colorID])
-    yLabelOffset += lineHeight
-    canvas.drawText("EulerY: " + face.headEulerAngleY, left, top + yLabelOffset, idPaints[colorID])
-    yLabelOffset += lineHeight
-    canvas.drawText("EulerZ: " + face.headEulerAngleZ, left, top + yLabelOffset, idPaints[colorID])
 
     // Draw facial landmarks
     drawFaceLandmark(canvas, FaceLandmark.LEFT_EYE)
@@ -253,7 +191,7 @@ class FaceGraphic constructor(overlay: GraphicOverlay?, private val face: Face) 
 
   companion object {
     private const val FACE_POSITION_RADIUS = 8.0f
-    private const val ID_TEXT_SIZE = 30.0f
+    private const val ID_TEXT_SIZE = 50.0f
     private const val ID_Y_OFFSET = 40.0f
     private const val BOX_STROKE_WIDTH = 5.0f
     private const val NUM_COLORS = 10
