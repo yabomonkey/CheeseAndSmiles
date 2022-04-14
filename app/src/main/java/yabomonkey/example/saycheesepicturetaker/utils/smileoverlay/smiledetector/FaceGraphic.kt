@@ -124,7 +124,7 @@ class FaceGraphic constructor(overlay: GraphicOverlay?, private val face: Face) 
     // Draws smiling and left/right eye open probabilities.
     if (face.smilingProbability != null) {
       canvas.drawText(
-        "Smiling: " + String.format(Locale.US, "%.2f", face.smilingProbability),
+        "Smiling: %" + String.format(Locale.US, "%.0f", face.smilingProbability!! *100),
         left,
         top + yLabelOffset,
         idPaints[colorID]
