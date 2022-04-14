@@ -1,6 +1,9 @@
 package yabomonkey.example.saycheesepicturetaker
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import com.google.mlkit.vision.common.InputImage
@@ -12,8 +15,12 @@ private const val TAG = "SmileAnalyzer"
 /** Helper type alias used for analysis use case callbacks */
 typealias SmileListener = (smiling: Boolean) -> Unit
 
-class SmileAnalyzer(private val listener: SmileListener? = null) : ImageAnalysis.Analyzer {
 
+class SmileAnalyzer(private val smilePercentage: Int, private val listener: SmileListener? = null) : ImageAnalysis.Analyzer {
+
+    @Override
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    @ExperimentalGetImage
     override fun analyze(imageProxy: ImageProxy) {
 //        Log.d(TAG, ".analyze: called")
         val realTimeOpts = FaceDetectorOptions.Builder()
@@ -31,9 +38,9 @@ class SmileAnalyzer(private val listener: SmileListener? = null) : ImageAnalysis
             val result = detector.process(image)
                 .addOnSuccessListener { faces ->
                     for (face in faces) {
-//                        Log.d(TAG, "Detected a face: ${face.trackingId}")
+                        Log.d(TAG, "Detected a face: ${face.trackingId} with smile: ${face.smilingProbability} and the minimum detect is ${smilePercentage.toFloat()}")
                         if (face.smilingProbability != null) {
-                            if (face.smilingProbability > 0.4) {
+                            if (face.smilingProbability!! > smilePercentage.toFloat()/100) {
                                 Log.d(TAG, "Detected a smile with probability: ${face.smilingProbability} and there are ${faces.size} faces detected")
                                 numberOfSmiles++
 
