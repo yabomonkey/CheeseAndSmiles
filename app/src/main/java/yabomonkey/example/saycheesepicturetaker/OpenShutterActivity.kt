@@ -3,6 +3,8 @@ package yabomonkey.example.saycheesepicturetaker
 import android.content.ContentValues
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.TextView
@@ -22,12 +24,15 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
+
 class OpenShutterActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityOpenShutterBinding
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
     private var uiTimer = Timer("uiTimer")
     private var sysTimer = Timer("sysTimer")
+    private lateinit var holderTimerTask: TimerTask
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,13 +43,14 @@ class OpenShutterActivity : AppCompatActivity() {
 
         //Start a timer based on the  and then launch the camera after the time has run
         startCountdownTimer(intent.getIntExtra(DELAY_LENGTH, 0))
-        sysTimer.schedule(((intent.getIntExtra(DELAY_LENGTH, 0)) * 1000).toLong()) {
+        handler.postDelayed({
             startCamera()
-        }
+        }, ((intent.getIntExtra(DELAY_LENGTH, 0)) * 1000).toLong())
 
         cameraExecutor = Executors.newSingleThreadExecutor()
 
     }
+
 
     private fun startCamera() {
 
@@ -111,9 +117,9 @@ class OpenShutterActivity : AppCompatActivity() {
 
         //Start a timer based on the exposure slider setting and then launch the camera after the time has run
         startCountdownTimer(intent.getIntExtra(EXPOSURE_LENGTH, 0))
-        sysTimer.schedule(((intent.getIntExtra(EXPOSURE_LENGTH, 0)) * 1000).toLong()) {
+        handler.postDelayed({
             finish()
-        }
+        }, ((intent.getIntExtra(EXPOSURE_LENGTH, 0)) * 1000).toLong())
     }
 
     override fun onDestroy() {
@@ -125,9 +131,6 @@ class OpenShutterActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-//        if (timer.) {
-//
-//        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
