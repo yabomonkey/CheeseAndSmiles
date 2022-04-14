@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import yabomonkey.example.saycheesepicturetaker.databinding.ActivityGalleryBinding
+import yabomonkey.example.saycheesepicturetaker.utils.PhotoFragment
 import yabomonkey.example.saycheesepicturetaker.utils.padWithDisplayCutout
 import yabomonkey.example.saycheesepicturetaker.utils.showImmersive
 import java.io.File

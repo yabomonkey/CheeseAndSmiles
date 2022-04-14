@@ -13,6 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SayCheesePictureTaker">
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+
+        <!-- Optional: Add it to automatically download ML model to device after
+          your app is installed.-->
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="face"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -45,6 +55,13 @@
 
             <!-- Declare notch support -->
             <meta-data android:name="android.notch_support" android:value="true"/>
+        </activity>
+        <activity
+            android:name=".OpenSmileOverlayActivity"
+            android:exported="false"
+            android:label="OpenSmileOverlayActivity"
+            android:theme="@style/Theme.SayCheesePictureTaker.NoActionBar"
+            android:parentActivityName=".MainActivity">
         </activity>
         <activity
             android:name=".OpenShutterActivity"

@@ -30,4 +30,13 @@
     <style name="Theme.SayCheesePictureTaker.AlertDialogCustom" parent="Theme.MaterialComponents.Dialog.Alert">
         <item name="android:windowNoTitle">true</item>
     </style>
+
+    <style name="Theme.SayCheesePictureTaker.SeekBars" parent="Theme.SayCheesePictureTaker">
+        <item name="colorSecondary">@color/purple_200</item>
+        <item name="colorSecondaryVariant">@color/purple_500</item>
+        <item name="colorOnSecondary">@color/white</item>
+    </style>
+
+
+
 </resources>
