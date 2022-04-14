@@ -19,10 +19,10 @@ import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import yabomonkey.example.saycheesepicturetaker.databinding.ActivitySmileOverlayBinding
 import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.CameraXViewModel
-import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.smiledetector.FaceDetectorProcessor
-import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.smiledetector.VisionImageProcessor
-import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.smiledetector.PreferenceUtils
 import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.GraphicOverlay
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.smiledetector.FaceDetectorProcessor
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.smiledetector.PreferenceUtils
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.smiledetector.VisionImageProcessor
 import java.util.concurrent.ExecutorService
 
 private const val TAG = "OpenSmileOverlayAct"
@@ -151,7 +151,7 @@ class OpenSmileOverlayActivity : AppCompatActivity()  {
             ContextCompat.getMainExecutor(this),
             ImageAnalysis.Analyzer { imageProxy: ImageProxy ->
                 if (needUpdateGraphicOverlayImageSourceInfo) {
-                    val isImageFlipped = false
+                    val isImageFlipped = true
                     val rotationDegrees = imageProxy.imageInfo.rotationDegrees
                     if (rotationDegrees == 0 || rotationDegrees == 180) {
                         graphicOverlay!!.setImageSourceInfo(imageProxy.width, imageProxy.height, isImageFlipped)
