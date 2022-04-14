@@ -1,4 +1,4 @@
-package yabomonkey.example.saycheesepicturetaker.facedetector.preference;
+package yabomonkey.example.saycheesepicturetaker.utils.smileoverlay;
 
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;

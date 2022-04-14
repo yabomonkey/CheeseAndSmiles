@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.mlkit.vision.demo.kotlin.facedetector
+package yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.smiledetector
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -23,7 +23,7 @@ import com.google.mlkit.vision.face.Face
 import com.google.mlkit.vision.face.FaceContour
 import com.google.mlkit.vision.face.FaceLandmark
 import com.google.mlkit.vision.face.FaceLandmark.LandmarkType
-import yabomonkey.example.saycheesepicturetaker.utils.GraphicOverlay
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.GraphicOverlay
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.max

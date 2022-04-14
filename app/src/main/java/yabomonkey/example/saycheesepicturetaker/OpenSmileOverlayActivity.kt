@@ -18,11 +18,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import yabomonkey.example.saycheesepicturetaker.databinding.ActivitySmileOverlayBinding
-import yabomonkey.example.saycheesepicturetaker.facedetector.CameraXViewModel
-import yabomonkey.example.saycheesepicturetaker.facedetector.FaceDetectorProcessor
-import yabomonkey.example.saycheesepicturetaker.facedetector.VisionImageProcessor
-import yabomonkey.example.saycheesepicturetaker.facedetector.preference.PreferenceUtils
-import yabomonkey.example.saycheesepicturetaker.utils.GraphicOverlay
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.CameraXViewModel
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.smiledetector.FaceDetectorProcessor
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.smiledetector.VisionImageProcessor
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.smiledetector.PreferenceUtils
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.GraphicOverlay
 import java.util.concurrent.ExecutorService
 
 private const val TAG = "OpenSmileOverlayAct"

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package yabomonkey.example.saycheesepicturetaker.facedetector;
+package yabomonkey.example.saycheesepicturetaker.utils.smileoverlay;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -40,8 +40,8 @@ import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 
-import yabomonkey.example.saycheesepicturetaker.facedetector.preference.PreferenceUtils;
-import yabomonkey.example.saycheesepicturetaker.utils.GraphicOverlay;
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.smiledetector.PreferenceUtils;
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.smiledetector.VisionImageProcessor;
 
 /**
  * Manages the camera and allows UI updates on top of it (e.g. overlaying extra Graphics or

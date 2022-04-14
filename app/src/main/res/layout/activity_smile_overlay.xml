@@ -19,7 +19,7 @@
 
     </androidx.camera.view.PreviewView>
 
-    <yabomonkey.example.saycheesepicturetaker.utils.GraphicOverlay
+    <yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.GraphicOverlay
         android:id="@+id/cameraDrawingOverlay"
         android:layout_width="0dp"
         android:layout_height="0dp"

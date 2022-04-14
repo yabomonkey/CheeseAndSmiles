@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package yabomonkey.example.saycheesepicturetaker.facedetector;
+package yabomonkey.example.saycheesepicturetaker.utils.smileoverlay;
 
 import androidx.annotation.NonNull;
 

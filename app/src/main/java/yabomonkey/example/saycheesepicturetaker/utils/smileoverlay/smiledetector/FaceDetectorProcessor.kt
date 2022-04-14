@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package yabomonkey.example.saycheesepicturetaker.facedetector
+package yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.smiledetector
 
 import android.content.Context
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.demo.kotlin.facedetector.FaceGraphic
 import com.google.mlkit.vision.face.*
-import yabomonkey.example.saycheesepicturetaker.utils.GraphicOverlay
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.GraphicOverlay
 import java.util.*
 
 class FaceDetectorProcessor(context: Context, detectorOptions: FaceDetectorOptions?) :

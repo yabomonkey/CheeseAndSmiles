@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package yabomonkey.example.saycheesepicturetaker.facedetector
+package yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.smiledetector
 
 import android.app.ActivityManager
 import android.content.Context
@@ -34,8 +34,11 @@ import com.google.android.odml.image.MediaMlImageBuilder
 import com.google.android.odml.image.MlImage
 import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.common.InputImage
-import yabomonkey.example.saycheesepicturetaker.facedetector.preference.PreferenceUtils
-import yabomonkey.example.saycheesepicturetaker.utils.GraphicOverlay
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.BitmapUtils
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.CameraImageGraphic
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.FrameMetadata
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.ScopedExecutor
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.GraphicOverlay
 import java.lang.Math.max
 import java.lang.Math.min
 import java.nio.ByteBuffer
@@ -48,7 +51,8 @@ import java.util.*
  *
  * @param <T> The type of the detected feature.
  */
-abstract class VisionProcessorBase<T>(context: Context) : VisionImageProcessor {
+abstract class VisionProcessorBase<T>(context: Context) :
+  VisionImageProcessor {
 
   companion object {
     const val MANUAL_TESTING_LOG = "LogTagForTest"

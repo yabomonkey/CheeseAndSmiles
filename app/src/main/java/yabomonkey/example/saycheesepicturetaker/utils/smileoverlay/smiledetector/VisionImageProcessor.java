@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package yabomonkey.example.saycheesepicturetaker.facedetector;
+package yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.smiledetector;
 
 import android.graphics.Bitmap;
 import android.os.Build.VERSION_CODES;
@@ -26,7 +26,8 @@ import com.google.mlkit.common.MlKitException;
 
 import java.nio.ByteBuffer;
 
-import yabomonkey.example.saycheesepicturetaker.utils.GraphicOverlay;
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.FrameMetadata;
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.GraphicOverlay;
 
 /** An interface to process the images with different vision detectors and custom image models. */
 public interface VisionImageProcessor {

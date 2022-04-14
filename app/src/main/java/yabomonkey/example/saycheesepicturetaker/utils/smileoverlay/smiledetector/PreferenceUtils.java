@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package yabomonkey.example.saycheesepicturetaker.facedetector.preference;
+package yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.smiledetector;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -35,7 +35,7 @@ import com.google.mlkit.vision.objects.custom.CustomObjectDetectorOptions;
 import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions;
 
 import yabomonkey.example.saycheesepicturetaker.R;
-import yabomonkey.example.saycheesepicturetaker.facedetector.CameraSource;
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.CameraSource;
 
 /** Utility class to retrieve shared preferences. */
 public class PreferenceUtils {

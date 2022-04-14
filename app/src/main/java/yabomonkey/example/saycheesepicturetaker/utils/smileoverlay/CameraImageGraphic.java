@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-package yabomonkey.example.saycheesepicturetaker.facedetector;
+package yabomonkey.example.saycheesepicturetaker.utils.smileoverlay;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-
-import yabomonkey.example.saycheesepicturetaker.utils.GraphicOverlay;
 
 /** Draw camera image to background. */
 public class CameraImageGraphic extends GraphicOverlay.Graphic {

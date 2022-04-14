@@ -1,4 +1,4 @@
-package yabomonkey.example.saycheesepicturetaker
+package yabomonkey.example.saycheesepicturetaker.utils
 
 import android.os.Build
 import android.util.Log

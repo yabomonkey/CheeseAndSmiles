@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package yabomonkey.example.saycheesepicturetaker.utils;
+package yabomonkey.example.saycheesepicturetaker.utils.smileoverlay;
 
 import android.content.Context;
 import android.graphics.Canvas;
