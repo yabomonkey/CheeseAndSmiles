@@ -12,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.camera.core.CameraSelector
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
@@ -27,6 +28,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.ramotion.fluidslider.FluidSlider
 import yabomonkey.example.saycheesepicturetaker.databinding.ActivityMainBinding
+import yabomonkey.example.saycheesepicturetaker.utils.showImmersive
 
 private const val TAG = "MainActivity"
 const val APP_TAG = "Smile-Finder"
@@ -205,9 +207,17 @@ class MainActivity : BaseActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+        return if (item.itemId == R.id.action_about_me) {
+
+            AlertDialog.Builder(this, R.style.Theme_SayCheesePictureTaker_AlertDialogCustom)
+                .setTitle(getString(R.string.about_title))
+                .setMessage(getString(R.string.about_dialog))
+                .setIcon(android.R.drawable.ic_menu_camera)
+                .setNeutralButton(android.R.string.yes, null)
+                .create().showImmersive()
+            true
+        } else {
+            super.onOptionsItemSelected(item)
         }
     }
 

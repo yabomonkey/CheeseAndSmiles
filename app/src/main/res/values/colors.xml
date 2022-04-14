@@ -13,6 +13,7 @@
     <color name="icActive">#000000</color>
     <color name="icFocused">#DD424141</color>
     <color name="icPressed">#AACCC8C8</color>
+    <color name="colorLightAccent">#8ECAE6</color>
 
 
 </resources>
