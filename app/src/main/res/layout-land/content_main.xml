@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <SeekBar
+        android:id="@+id/delaySeekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:max="8"
+        android:progress="1"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/delayTextView"
+        app:layout_constraintTop_toBottomOf="@+id/delayTextView" />
+
+    <SeekBar
+        android:id="@+id/exposureSeekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:max="20"
+        android:min="5"
+        android:progress="10"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/exposureTextView"
+        app:layout_constraintTop_toBottomOf="@+id/exposureTextView" />
+
+    <TextView
+        android:id="@+id/delayTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/delay_timer"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/exposureTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/exposure_timer"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintStart_toStartOf="@+id/delaySeekBar"
+        app:layout_constraintTop_toBottomOf="@+id/delaySeekBar" />
+
+    <Button
+        android:id="@+id/openShutterButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/go_go_gadget_camera"
+        android:theme="@style/Theme.SayCheesePictureTaker.BrightButtons"
+        app:layout_constraintBottom_toBottomOf="@+id/photo_view_button"
+        app:layout_constraintEnd_toStartOf="@+id/photo_view_button"
+        app:layout_constraintStart_toStartOf="@+id/smileConfidenceTextView"
+        app:layout_constraintTop_toBottomOf="@+id/smileOverlayButton" />
+
+    <ImageButton
+        android:id="@+id/photo_view_button"
+        android:layout_width="@dimen/round_button_medium"
+        android:layout_height="@dimen/round_button_medium"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/ic_outer_circle"
+        android:contentDescription="@string/gallery_button_alt"
+        android:padding="@dimen/spacing_large"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/ic_photo" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/camera_button_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        app:checkedButton="@id/backCamMaterialButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/cameraTextView"
+        app:layout_constraintTop_toBottomOf="@+id/cameraTextView"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/backCamMaterialButton"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="177dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/camera_selector_back" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/frontCamMaterialButton"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="177dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="0dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/camera_selector_front" />
+
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+
+    <TextView
+        android:id="@+id/cameraTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="cameraTextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintStart_toStartOf="@+id/exposureSeekBar"
+        app:layout_constraintTop_toBottomOf="@+id/exposureSeekBar" />
+
+    <TextView
+        android:id="@+id/smileConfidenceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="smileConfidenceTextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintBaseline_toBaselineOf="@+id/delayTextView"
+        app:layout_constraintStart_toStartOf="@+id/guideline2" />
+
+    <com.ramotion.fluidslider.FluidSlider
+        android:id="@+id/smileFluidSlider"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:elevation="2dp"
+        app:bar_color="@color/colorPrimary"
+        app:bar_text_color="#000000"
+        app:duration="@android:integer/config_mediumAnimTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/smileConfidenceTextView"
+        app:layout_constraintTop_toBottomOf="@+id/smileConfidenceTextView"
+        app:size="normal"
+        app:text_size="16sp"
+        tools:targetApi="lollipop" />
+
+    <Button
+        android:id="@+id/smileOverlayButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="Check out your smile in realtime"
+        android:theme="@style/Theme.SayCheesePictureTaker.DarkButtons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/smileFluidSlider" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_begin="309dp"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
