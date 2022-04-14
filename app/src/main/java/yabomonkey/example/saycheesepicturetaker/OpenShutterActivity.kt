@@ -12,6 +12,7 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import yabomonkey.example.saycheesepicturetaker.databinding.ActivityOpenShutterBinding
+import yabomonkey.example.saycheesepicturetaker.utils.SmileAnalyzer
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService

@@ -124,7 +124,7 @@ class FaceGraphic constructor(overlay: GraphicOverlay?, private val face: Face) 
     // Draws smiling and left/right eye open probabilities.
     if (face.smilingProbability != null) {
       canvas.drawText(
-        "Smiling: " + String.format(Locale.US, "%.2f", face.smilingProbability),
+        "Smiling: %" + String.format(Locale.US, "%.0f", face.smilingProbability!! *100),
         left,
         top + yLabelOffset,
         idPaints[colorID]
@@ -135,16 +135,16 @@ class FaceGraphic constructor(overlay: GraphicOverlay?, private val face: Face) 
     val leftEye = face.getLandmark(FaceLandmark.LEFT_EYE)
     if (leftEye != null) {
       val leftEyeLeft =
-        translateX(leftEye.position.x) - idPaints[colorID].measureText("Left Eye") / 2.0f
+        translateX(leftEye.position.x) - idPaints[colorID].measureText("Right Eye") / 2.0f
       canvas.drawRect(
         leftEyeLeft - BOX_STROKE_WIDTH,
         translateY(leftEye.position.y) + ID_Y_OFFSET - ID_TEXT_SIZE,
-        leftEyeLeft + idPaints[colorID].measureText("Left Eye") + BOX_STROKE_WIDTH,
+        leftEyeLeft + idPaints[colorID].measureText("Right Eye") + BOX_STROKE_WIDTH,
         translateY(leftEye.position.y) + ID_Y_OFFSET + BOX_STROKE_WIDTH,
         labelPaints[colorID]
       )
       canvas.drawText(
-        "Left Eye",
+        "Right Eye",
         leftEyeLeft,
         translateY(leftEye.position.y) + ID_Y_OFFSET,
         idPaints[colorID]
@@ -154,16 +154,16 @@ class FaceGraphic constructor(overlay: GraphicOverlay?, private val face: Face) 
     val rightEye = face.getLandmark(FaceLandmark.RIGHT_EYE)
     if (rightEye != null) {
       val rightEyeLeft =
-        translateX(rightEye.position.x) - idPaints[colorID].measureText("Right Eye") / 2.0f
+        translateX(rightEye.position.x) - idPaints[colorID].measureText("Left Eye") / 2.0f
       canvas.drawRect(
         rightEyeLeft - BOX_STROKE_WIDTH,
         translateY(rightEye.position.y) + ID_Y_OFFSET - ID_TEXT_SIZE,
-        rightEyeLeft + idPaints[colorID].measureText("Right Eye") + BOX_STROKE_WIDTH,
+        rightEyeLeft + idPaints[colorID].measureText("Left Eye") + BOX_STROKE_WIDTH,
         translateY(rightEye.position.y) + ID_Y_OFFSET + BOX_STROKE_WIDTH,
         labelPaints[colorID]
       )
       canvas.drawText(
-        "Right Eye",
+        "Left Eye",
         rightEyeLeft,
         translateY(rightEye.position.y) + ID_Y_OFFSET,
         idPaints[colorID]
