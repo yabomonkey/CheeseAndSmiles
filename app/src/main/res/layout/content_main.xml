@@ -164,7 +164,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Check out your smile in realtime"
-        android:theme="@style/Theme.SayCheesePictureTaker.RegularButtons"
+        android:theme="@style/Theme.SayCheesePictureTaker.DarkButtons"
         app:layout_constraintBottom_toTopOf="@+id/openShutterButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
