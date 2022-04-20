@@ -1,6 +1,7 @@
 package yabomonkey.example.saycheesepicturetaker
 
 import android.content.ContentValues
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import yabomonkey.example.saycheesepicturetaker.databinding.ActivityOpenShutterBinding
 import yabomonkey.example.saycheesepicturetaker.utils.SmileAnalyzer
 import java.text.SimpleDateFormat
@@ -31,26 +33,35 @@ class OpenShutterActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
     private var uiTimer = Timer("uiTimer")
     private var sysTimer = Timer("sysTimer")
-    private lateinit var holderTimerTask: TimerTask
     private val handler = Handler(Looper.getMainLooper())
+    private lateinit var delayTimerCountdown: TextView
+    private var activityRestored: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityOpenShutterBinding.inflate(layoutInflater)
+
         setContentView(viewBinding.root)
-
-        Log.d(TAG, "onCreate called")
-
-        //Start a timer based on the  and then launch the camera after the time has run
-        startCountdownTimer(intent.getIntExtra(DELAY_LENGTH, 0))
-        handler.postDelayed({
-            startCamera()
-        }, ((intent.getIntExtra(DELAY_LENGTH, 0)) * 1000).toLong())
 
         cameraExecutor = Executors.newSingleThreadExecutor()
 
+        if (savedInstanceState?.getString(DELAY_HOLDER) == null && savedInstanceState?.getString(EXPOSURE_HOLDER) == null) {
+            //Start a timer based on the  and then launch the camera after the time has run
+            startCountdownTimer(intent.getIntExtra(DELAY_LENGTH, 0))
+            handler.postDelayed(updateDelayTimer, ((intent.getIntExtra(DELAY_LENGTH, 0)) * 1000).toLong())
+        } else if (savedInstanceState?.getString(DELAY_HOLDER) != null && savedInstanceState?.getString(EXPOSURE_HOLDER) == null) {
+            startCountdownTimer(savedInstanceState?.getString(DELAY_HOLDER)!!.toInt())
+            handler.postDelayed(updateDelayTimer, ((savedInstanceState?.getString(DELAY_HOLDER)!!.toInt()) * 1000).toLong())
+        } else if (savedInstanceState?.getString(DELAY_HOLDER) == null && savedInstanceState?.getString(EXPOSURE_HOLDER) != null) {
+            activityRestored = true
+            startCamera()
+            startCountdownTimer(savedInstanceState?.getString(EXPOSURE_HOLDER)!!.toInt())
+            handler.postDelayed(
+                updateExposureTimer,
+                (savedInstanceState?.getString(EXPOSURE_HOLDER)!!.toInt() * 1000).toLong()
+            )
+        }
     }
-
 
     private fun startCamera() {
 
@@ -64,8 +75,6 @@ class OpenShutterActivity : AppCompatActivity() {
             AspectRatio.RATIO_4_3
         }
 
-        val rotation = viewBinding.viewFinder.display.rotation
-
         cameraProviderFuture.addListener({
             // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
@@ -76,6 +85,8 @@ class OpenShutterActivity : AppCompatActivity() {
                 .also {
                     it.setSurfaceProvider(viewBinding.viewFinder.surfaceProvider)
                 }
+
+            val rotation = preview.targetRotation
 
             imageCapture = ImageCapture.Builder()
                 // We request aspect ratio but no resolution to match preview config, but letting
@@ -116,10 +127,13 @@ class OpenShutterActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
 
         //Start a timer based on the exposure slider setting and then launch the camera after the time has run
-        startCountdownTimer(intent.getIntExtra(EXPOSURE_LENGTH, 0))
-        handler.postDelayed({
-            finish()
-        }, ((intent.getIntExtra(EXPOSURE_LENGTH, 0)) * 1000).toLong())
+        if (!activityRestored) {
+            startCountdownTimer(intent.getIntExtra(EXPOSURE_LENGTH, 0))
+            handler.postDelayed(
+                updateExposureTimer,
+                ((intent.getIntExtra(EXPOSURE_LENGTH, 0)) * 1000).toLong()
+            )
+        }
     }
 
     override fun onDestroy() {
@@ -131,6 +145,15 @@ class OpenShutterActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        if (handler.hasCallbacks(updateDelayTimer)){
+            outState.putString(DELAY_HOLDER, delayTimerCountdown.text.toString())
+        }
+        handler.removeCallbacks(updateDelayTimer)
+
+        if (handler.hasCallbacks(updateExposureTimer)) {
+            outState.putString(EXPOSURE_HOLDER, delayTimerCountdown.text.toString())
+        }
+        handler.removeCallbacks(updateExposureTimer)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -183,7 +206,7 @@ class OpenShutterActivity : AppCompatActivity() {
 
     private fun startCountdownTimer(secondsToCount: Int) {
         var counter = secondsToCount
-        val delayTimerCountdown: TextView = findViewById(R.id.timerCountdown)
+        delayTimerCountdown = findViewById(R.id.timerCountdown)
 
         uiTimer.schedule(1000, 1000) {
             runOnUiThread {
@@ -198,7 +221,9 @@ class OpenShutterActivity : AppCompatActivity() {
         }
     }
 
+    private val updateDelayTimer = Runnable { startCamera() }
 
+    private val updateExposureTimer = Runnable { finish() }
 
     companion object {
         private const val TAG = "OpenShutterActivity"
