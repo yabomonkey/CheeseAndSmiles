@@ -1,7 +1,6 @@
 package yabomonkey.example.saycheesepicturetaker
 
 import android.content.ContentValues
-import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -14,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import yabomonkey.example.saycheesepicturetaker.databinding.ActivityOpenShutterBinding
 import yabomonkey.example.saycheesepicturetaker.utils.SmileAnalyzer
 import java.text.SimpleDateFormat
@@ -49,16 +47,16 @@ class OpenShutterActivity : AppCompatActivity() {
             //Start a timer based on the  and then launch the camera after the time has run
             startCountdownTimer(intent.getIntExtra(DELAY_LENGTH, 0))
             handler.postDelayed(updateDelayTimer, ((intent.getIntExtra(DELAY_LENGTH, 0)) * 1000).toLong())
-        } else if (savedInstanceState?.getString(DELAY_HOLDER) != null && savedInstanceState?.getString(EXPOSURE_HOLDER) == null) {
-            startCountdownTimer(savedInstanceState?.getString(DELAY_HOLDER)!!.toInt())
-            handler.postDelayed(updateDelayTimer, ((savedInstanceState?.getString(DELAY_HOLDER)!!.toInt()) * 1000).toLong())
-        } else if (savedInstanceState?.getString(DELAY_HOLDER) == null && savedInstanceState?.getString(EXPOSURE_HOLDER) != null) {
+        } else if (savedInstanceState.getString(DELAY_HOLDER) != null && savedInstanceState.getString(EXPOSURE_HOLDER) == null) {
+            startCountdownTimer(savedInstanceState.getString(DELAY_HOLDER)!!.toInt())
+            handler.postDelayed(updateDelayTimer, ((savedInstanceState.getString(DELAY_HOLDER)!!.toInt()) * 1000).toLong())
+        } else if (savedInstanceState.getString(DELAY_HOLDER) == null && savedInstanceState.getString(EXPOSURE_HOLDER) != null) {
             activityRestored = true
             startCamera()
-            startCountdownTimer(savedInstanceState?.getString(EXPOSURE_HOLDER)!!.toInt())
+            startCountdownTimer(savedInstanceState.getString(EXPOSURE_HOLDER)!!.toInt())
             handler.postDelayed(
                 updateExposureTimer,
-                (savedInstanceState?.getString(EXPOSURE_HOLDER)!!.toInt() * 1000).toLong()
+                (savedInstanceState.getString(EXPOSURE_HOLDER)!!.toInt() * 1000).toLong()
             )
         }
     }
@@ -99,7 +97,7 @@ class OpenShutterActivity : AppCompatActivity() {
 
             val imageAnalyzer = ImageAnalysis.Builder()
                 .build()
-                .also { it ->
+                .also {
                     it.setAnalyzer(cameraExecutor, SmileAnalyzer(intent.getIntExtra(SMILE_PERCENTAGE, 0)) { allSmiling ->
                         if (allSmiling) takePhoto()
                     }
@@ -156,10 +154,6 @@ class OpenShutterActivity : AppCompatActivity() {
         handler.removeCallbacks(updateExposureTimer)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-    }
-
     private fun takePhoto() {
         // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return
@@ -170,9 +164,7 @@ class OpenShutterActivity : AppCompatActivity() {
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/$APP_TAG")
-            }
+            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/$APP_TAG")
         }
 
         // Create output options object which contains file + metadata
