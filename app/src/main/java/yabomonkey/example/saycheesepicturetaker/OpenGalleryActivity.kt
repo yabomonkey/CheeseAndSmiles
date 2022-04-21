@@ -2,7 +2,6 @@ package yabomonkey.example.saycheesepicturetaker
 
 import android.content.Intent
 import android.media.MediaScannerConnection
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -133,9 +132,7 @@ class OpenGalleryActivity : AppCompatActivity() {
         }
 
         // Make sure that the cutout "safe area" avoids the screen notch if any
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            // Use extension method to pad "inside" view containing UI using display cutout's bounds
-            viewBinding.cutoutSafeArea.padWithDisplayCutout()
-        }
+        // Use extension method to pad "inside" view containing UI using display cutout's bounds
+        viewBinding.cutoutSafeArea.padWithDisplayCutout()
     }
 }

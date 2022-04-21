@@ -51,7 +51,7 @@ class SmileAnalyzer(private val smilePercentage: Int, private val listener: Smil
                     }
                     listener?.invoke(allSmiling)
                 }
-                .addOnFailureListener { _ ->
+                .addOnFailureListener {
                     Log.e(TAG, "detector.process failed")
                 }
             imageProxy.close()

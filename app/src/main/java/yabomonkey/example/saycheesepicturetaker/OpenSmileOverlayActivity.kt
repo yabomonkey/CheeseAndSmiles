@@ -10,7 +10,6 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.face.FaceDetectorOptions
@@ -41,13 +40,10 @@ class OpenSmileOverlayActivity : AppCompatActivity()  {
         ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application))
             .get(CameraXViewModel::class.java)
             .processCameraProvider
-            .observe(
-                this,
-                Observer { provider: ProcessCameraProvider? ->
-                    cameraProvider = provider
-                    bindAllCameraUseCases()
-                }
-            )
+            .observe(this) { provider: ProcessCameraProvider? ->
+                cameraProvider = provider
+                bindAllCameraUseCases()
+            }
 
         viewBinding.backButton2.setOnClickListener {
             finish()
@@ -129,26 +125,33 @@ class OpenSmileOverlayActivity : AppCompatActivity()  {
         analysisUseCase?.setAnalyzer(
             // imageProcessor.processImageProxy will use another thread to run the detection underneath,
             // thus we can just runs the analyzer itself on main thread.
-            ContextCompat.getMainExecutor(this),
-            ImageAnalysis.Analyzer { imageProxy: ImageProxy ->
-                if (needUpdateGraphicOverlayImageSourceInfo) {
-                    val isImageFlipped = true
-                    val rotationDegrees = imageProxy.imageInfo.rotationDegrees
-                    if (rotationDegrees == 0 || rotationDegrees == 180) {
-                        viewBinding.cameraDrawingOverlay.setImageSourceInfo(imageProxy.width, imageProxy.height, isImageFlipped)
-                    } else {
-                        viewBinding.cameraDrawingOverlay.setImageSourceInfo(imageProxy.height, imageProxy.width, isImageFlipped)
-                    }
-                    needUpdateGraphicOverlayImageSourceInfo = false
+            ContextCompat.getMainExecutor(this)
+        ) { imageProxy: ImageProxy ->
+            if (needUpdateGraphicOverlayImageSourceInfo) {
+                val isImageFlipped = true
+                val rotationDegrees = imageProxy.imageInfo.rotationDegrees
+                if (rotationDegrees == 0 || rotationDegrees == 180) {
+                    viewBinding.cameraDrawingOverlay.setImageSourceInfo(
+                        imageProxy.width,
+                        imageProxy.height,
+                        isImageFlipped
+                    )
+                } else {
+                    viewBinding.cameraDrawingOverlay.setImageSourceInfo(
+                        imageProxy.height,
+                        imageProxy.width,
+                        isImageFlipped
+                    )
                 }
-                try {
-                    imageProcessor!!.processImageProxy(imageProxy, viewBinding.cameraDrawingOverlay)
-                } catch (e: MlKitException) {
-                    Log.e(TAG, "Failed to process image. Error: " + e.localizedMessage)
-                    Toast.makeText(applicationContext, e.localizedMessage, Toast.LENGTH_SHORT).show()
-                }
+                needUpdateGraphicOverlayImageSourceInfo = false
             }
-        )
+            try {
+                imageProcessor!!.processImageProxy(imageProxy, viewBinding.cameraDrawingOverlay)
+            } catch (e: MlKitException) {
+                Log.e(TAG, "Failed to process image. Error: " + e.localizedMessage)
+                Toast.makeText(applicationContext, e.localizedMessage, Toast.LENGTH_SHORT).show()
+            }
+        }
         cameraProvider!!.bindToLifecycle(/* lifecycleOwner= */ this, cameraSelector!!, analysisUseCase)
     }
 }
