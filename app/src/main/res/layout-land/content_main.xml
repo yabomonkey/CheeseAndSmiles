@@ -39,7 +39,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/delay_timer"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/exposure_timer"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="@+id/delaySeekBar"
         app:layout_constraintTop_toBottomOf="@+id/delaySeekBar" />
 
@@ -129,7 +129,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="cameraTextView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="@+id/exposureSeekBar"
         app:layout_constraintTop_toBottomOf="@+id/exposureSeekBar" />
 
@@ -139,7 +139,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="smileConfidenceTextView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBaseline_toBaselineOf="@+id/delayTextView"
         app:layout_constraintStart_toStartOf="@+id/guideline2" />
 
@@ -155,7 +155,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/smileConfidenceTextView"
         app:layout_constraintTop_toBottomOf="@+id/smileConfidenceTextView"
-        app:size="normal"
+        app:size="small"
         app:text_size="16sp"
         tools:targetApi="lollipop" />
 
@@ -167,6 +167,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:text="Check out your smile in realtime"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:theme="@style/Theme.SayCheesePictureTaker.DarkButtons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -178,7 +179,7 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_begin="309dp"
+        app:layout_constraintGuide_begin="401dp"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

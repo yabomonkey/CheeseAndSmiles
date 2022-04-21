@@ -74,12 +74,12 @@ class MainActivity : BaseActivity() {
         val delaySeekBar: SeekBar = findViewById(R.id.delaySeekBar)
 
         delayProgressLabel = findViewById(R.id.delayTextView)
-        delayProgressLabel.text = "Delay (in seconds): ${delaySeekBar.progress}"
+        delayProgressLabel.text = "Delay before photo shoot (in seconds): ${delaySeekBar.progress}"
 
         delaySeekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                delayProgressLabel.text = "Delay (in seconds): $progress"
+                delayProgressLabel.text = "Delay before photo shoot (in seconds): $progress"
 //                Log.d(TAG, "delaySeekBar: onProgressChanged")
             }
 
@@ -99,7 +99,7 @@ class MainActivity : BaseActivity() {
         exposureSeekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                "Length of Photo Session (in seconds): $progress".also { exposureProgressLabel.text = it }
+                "Length of Photo Shoot (in seconds): $progress".also { exposureProgressLabel.text = it }
 //                Log.d(TAG, "exposureSeekBar: onProgressChanged")
             }
 
@@ -148,14 +148,14 @@ class MainActivity : BaseActivity() {
         smileConfidenceLabel = findViewById(R.id.smileConfidenceTextView)
         smileConfidenceLabel.text = smileConfidenceString
 
-        smileSlider.bubbleText = ""
         smileSlider.positionListener = {
             pos -> smileSliderPosition = "${minSlider + (totalSlider  * pos).toInt()}"
             smileConfidenceString = getString(R.string.smileConfidenceLabelText) + " " + smileSliderPosition
             smileConfidenceLabel.text = smileConfidenceString
+            smileSlider.bubbleText = smileSliderPosition
         }
 
-        var smileOverlayButton: Button = findViewById(R.id.smileOverlayButton)
+        val smileOverlayButton: Button = findViewById(R.id.smileOverlayButton)
 
         smileOverlayButton.setOnClickListener {
             val intent = Intent(this, OpenSmileOverlayActivity::class.java)
