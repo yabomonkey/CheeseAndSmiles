@@ -31,26 +31,35 @@ class OpenShutterActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
     private var uiTimer = Timer("uiTimer")
     private var sysTimer = Timer("sysTimer")
-    private lateinit var holderTimerTask: TimerTask
     private val handler = Handler(Looper.getMainLooper())
+    private lateinit var delayTimerCountdown: TextView
+    private var activityRestored: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityOpenShutterBinding.inflate(layoutInflater)
+
         setContentView(viewBinding.root)
-
-        Log.d(TAG, "onCreate called")
-
-        //Start a timer based on the  and then launch the camera after the time has run
-        startCountdownTimer(intent.getIntExtra(DELAY_LENGTH, 0))
-        handler.postDelayed({
-            startCamera()
-        }, ((intent.getIntExtra(DELAY_LENGTH, 0)) * 1000).toLong())
 
         cameraExecutor = Executors.newSingleThreadExecutor()
 
+        if (savedInstanceState?.getString(DELAY_HOLDER) == null && savedInstanceState?.getString(EXPOSURE_HOLDER) == null) {
+            //Start a timer based on the  and then launch the camera after the time has run
+            startCountdownTimer(intent.getIntExtra(DELAY_LENGTH, 0))
+            handler.postDelayed(updateDelayTimer, ((intent.getIntExtra(DELAY_LENGTH, 0)) * 1000).toLong())
+        } else if (savedInstanceState.getString(DELAY_HOLDER) != null && savedInstanceState.getString(EXPOSURE_HOLDER) == null) {
+            startCountdownTimer(savedInstanceState.getString(DELAY_HOLDER)!!.toInt())
+            handler.postDelayed(updateDelayTimer, ((savedInstanceState.getString(DELAY_HOLDER)!!.toInt()) * 1000).toLong())
+        } else if (savedInstanceState.getString(DELAY_HOLDER) == null && savedInstanceState.getString(EXPOSURE_HOLDER) != null) {
+            activityRestored = true
+            startCamera()
+            startCountdownTimer(savedInstanceState.getString(EXPOSURE_HOLDER)!!.toInt())
+            handler.postDelayed(
+                updateExposureTimer,
+                (savedInstanceState.getString(EXPOSURE_HOLDER)!!.toInt() * 1000).toLong()
+            )
+        }
     }
-
 
     private fun startCamera() {
 
@@ -64,8 +73,6 @@ class OpenShutterActivity : AppCompatActivity() {
             AspectRatio.RATIO_4_3
         }
 
-        val rotation = viewBinding.viewFinder.display.rotation
-
         cameraProviderFuture.addListener({
             // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
@@ -76,6 +83,8 @@ class OpenShutterActivity : AppCompatActivity() {
                 .also {
                     it.setSurfaceProvider(viewBinding.viewFinder.surfaceProvider)
                 }
+
+            val rotation = viewBinding.viewFinder.display.rotation
 
             imageCapture = ImageCapture.Builder()
                 // We request aspect ratio but no resolution to match preview config, but letting
@@ -88,7 +97,7 @@ class OpenShutterActivity : AppCompatActivity() {
 
             val imageAnalyzer = ImageAnalysis.Builder()
                 .build()
-                .also { it ->
+                .also {
                     it.setAnalyzer(cameraExecutor, SmileAnalyzer(intent.getIntExtra(SMILE_PERCENTAGE, 0)) { allSmiling ->
                         if (allSmiling) takePhoto()
                     }
@@ -116,10 +125,13 @@ class OpenShutterActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
 
         //Start a timer based on the exposure slider setting and then launch the camera after the time has run
-        startCountdownTimer(intent.getIntExtra(EXPOSURE_LENGTH, 0))
-        handler.postDelayed({
-            finish()
-        }, ((intent.getIntExtra(EXPOSURE_LENGTH, 0)) * 1000).toLong())
+        if (!activityRestored) {
+            startCountdownTimer(intent.getIntExtra(EXPOSURE_LENGTH, 0))
+            handler.postDelayed(
+                updateExposureTimer,
+                ((intent.getIntExtra(EXPOSURE_LENGTH, 0)) * 1000).toLong()
+            )
+        }
     }
 
     override fun onDestroy() {
@@ -131,10 +143,15 @@ class OpenShutterActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-    }
+        if (handler.hasCallbacks(updateDelayTimer)){
+            outState.putString(DELAY_HOLDER, delayTimerCountdown.text.toString())
+        }
+        handler.removeCallbacks(updateDelayTimer)
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
+        if (handler.hasCallbacks(updateExposureTimer)) {
+            outState.putString(EXPOSURE_HOLDER, delayTimerCountdown.text.toString())
+        }
+        handler.removeCallbacks(updateExposureTimer)
     }
 
     private fun takePhoto() {
@@ -147,9 +164,7 @@ class OpenShutterActivity : AppCompatActivity() {
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/$APP_TAG")
-            }
+            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/$APP_TAG")
         }
 
         // Create output options object which contains file + metadata
@@ -183,7 +198,7 @@ class OpenShutterActivity : AppCompatActivity() {
 
     private fun startCountdownTimer(secondsToCount: Int) {
         var counter = secondsToCount
-        val delayTimerCountdown: TextView = findViewById(R.id.timerCountdown)
+        delayTimerCountdown = findViewById(R.id.timerCountdown)
 
         uiTimer.schedule(1000, 1000) {
             runOnUiThread {
@@ -198,7 +213,9 @@ class OpenShutterActivity : AppCompatActivity() {
         }
     }
 
+    private val updateDelayTimer = Runnable { startCamera() }
 
+    private val updateExposureTimer = Runnable { finish() }
 
     companion object {
         private const val TAG = "OpenShutterActivity"
