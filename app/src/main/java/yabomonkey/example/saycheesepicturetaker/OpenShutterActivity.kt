@@ -84,7 +84,7 @@ class OpenShutterActivity : AppCompatActivity() {
                     it.setSurfaceProvider(viewBinding.viewFinder.surfaceProvider)
                 }
 
-            val rotation = preview.targetRotation
+            val rotation = viewBinding.viewFinder.display.rotation
 
             imageCapture = ImageCapture.Builder()
                 // We request aspect ratio but no resolution to match preview config, but letting
