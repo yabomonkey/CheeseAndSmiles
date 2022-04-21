@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
@@ -32,7 +31,6 @@ class OpenShutterActivity : AppCompatActivity() {
     private var uiTimer = Timer("uiTimer")
     private var sysTimer = Timer("sysTimer")
     private val handler = Handler(Looper.getMainLooper())
-    private lateinit var delayTimerCountdown: TextView
     private var activityRestored: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -144,12 +142,12 @@ class OpenShutterActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         if (handler.hasCallbacks(updateDelayTimer)){
-            outState.putString(DELAY_HOLDER, delayTimerCountdown.text.toString())
+            outState.putString(DELAY_HOLDER, viewBinding.timerCountdown.text.toString())
         }
         handler.removeCallbacks(updateDelayTimer)
 
         if (handler.hasCallbacks(updateExposureTimer)) {
-            outState.putString(EXPOSURE_HOLDER, delayTimerCountdown.text.toString())
+            outState.putString(EXPOSURE_HOLDER, viewBinding.timerCountdown.text.toString())
         }
         handler.removeCallbacks(updateExposureTimer)
     }
@@ -198,16 +196,15 @@ class OpenShutterActivity : AppCompatActivity() {
 
     private fun startCountdownTimer(secondsToCount: Int) {
         var counter = secondsToCount
-        delayTimerCountdown = findViewById(R.id.timerCountdown)
 
         uiTimer.schedule(1000, 1000) {
             runOnUiThread {
                 if (counter > 0) {
-                    delayTimerCountdown.text = counter.toString()
+                    viewBinding.timerCountdown.text = counter.toString()
                     counter--
 //                    Log.d(TAG, "The counter is $counter")
                 } else {
-                    delayTimerCountdown.text = ""
+                    viewBinding.timerCountdown.text = ""
                 }
             }
         }

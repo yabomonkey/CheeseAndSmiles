@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Photo Shoot Settings:"
+        android:text="@string/photo_shoot_settings"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,12 +23,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/delay_timer"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settingsHeader" />
+        app:layout_constraintTop_toBottomOf="@+id/settingsHeader"
+        tools:text="@string/delay_timer" />
 
     <SeekBar
         android:id="@+id/delaySeekBar"
@@ -48,10 +48,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="@string/exposure_timer"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="@+id/delaySeekBar"
-        app:layout_constraintTop_toBottomOf="@+id/delaySeekBar" />
+        app:layout_constraintTop_toBottomOf="@+id/delaySeekBar"
+        tools:text="@string/exposure_timer" />
 
     <SeekBar
         android:id="@+id/exposureSeekBar"
@@ -114,12 +114,13 @@
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="177dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:text="@string/camera_selector_back"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:ignore="TextContrastCheck" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/frontCamMaterialButton"
@@ -127,7 +128,7 @@
             android:layout_width="177dp"
             android:layout_height="match_parent"
             android:layout_marginTop="0dp"
-            android:layout_marginRight="0dp"
+            android:layout_marginEnd="0dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:text="@string/camera_selector_front"
@@ -142,20 +143,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="cameraTextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="@+id/exposureSeekBar"
-        app:layout_constraintTop_toBottomOf="@+id/exposureSeekBar" />
+        app:layout_constraintTop_toBottomOf="@+id/exposureSeekBar"
+        tools:text="cameraTextView" />
 
     <TextView
         android:id="@+id/smileConfidenceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="smileConfidenceTextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="@+id/cameraTextView"
-        app:layout_constraintTop_toBottomOf="@+id/camera_button_group" />
+        app:layout_constraintTop_toBottomOf="@+id/camera_button_group"
+        tools:text="smileConfidenceTextView" />
 
     <com.ramotion.fluidslider.FluidSlider
         android:id="@+id/smileFluidSlider"
@@ -178,7 +179,7 @@
         android:id="@+id/smileOverlayButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Check out your smile in realtime"
+        android:text="@string/smile_overlay_button_text"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:theme="@style/Theme.SayCheesePictureTaker.DarkButtons"
         app:layout_constraintBottom_toTopOf="@+id/openShutterButton"

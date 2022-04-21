@@ -38,22 +38,22 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/delay_timer"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/delay_timer" />
 
     <TextView
         android:id="@+id/exposureTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="@string/exposure_timer"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="@+id/delaySeekBar"
-        app:layout_constraintTop_toBottomOf="@+id/delaySeekBar" />
+        app:layout_constraintTop_toBottomOf="@+id/delaySeekBar"
+        tools:text="@string/exposure_timer" />
 
     <Button
         android:id="@+id/openShutterButton"
@@ -72,7 +72,7 @@
         android:id="@+id/photo_view_button"
         android:layout_width="@dimen/round_button_medium"
         android:layout_height="@dimen/round_button_medium"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/ic_outer_circle"
         android:contentDescription="@string/gallery_button_alt"
@@ -102,11 +102,12 @@
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="177dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
-            android:text="@string/camera_selector_back" />
+            android:text="@string/camera_selector_back"
+            tools:ignore="TextContrastCheck" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/frontCamMaterialButton"
@@ -114,7 +115,7 @@
             android:layout_width="177dp"
             android:layout_height="match_parent"
             android:layout_marginTop="0dp"
-            android:layout_marginRight="0dp"
+            android:layout_marginEnd="0dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:text="@string/camera_selector_front" />
@@ -128,20 +129,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="cameraTextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="@+id/exposureSeekBar"
-        app:layout_constraintTop_toBottomOf="@+id/exposureSeekBar" />
+        app:layout_constraintTop_toBottomOf="@+id/exposureSeekBar"
+        tools:text="@string/cameraSelectedLabelText" />
 
     <TextView
         android:id="@+id/smileConfidenceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="smileConfidenceTextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBaseline_toBaselineOf="@+id/delayTextView"
-        app:layout_constraintStart_toStartOf="@+id/guideline2" />
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        tools:text="@string/smileConfidenceLabelText" />
 
     <com.ramotion.fluidslider.FluidSlider
         android:id="@+id/smileFluidSlider"
@@ -166,12 +167,12 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="Check out your smile in realtime"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:theme="@style/Theme.SayCheesePictureTaker.DarkButtons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/smileFluidSlider" />
+        app:layout_constraintTop_toBottomOf="@+id/smileFluidSlider"
+        tools:text="@string/smile_overlay_button_text" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
