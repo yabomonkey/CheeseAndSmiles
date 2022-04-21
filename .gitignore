@@ -20,3 +20,4 @@ local.properties
 /.gradle/buildOutputCleanup/outputFiles.bin
 /.idea/misc.xml
 /.gradle/checksums/checksums.lock
+deploymentTargetDropDown.xml
