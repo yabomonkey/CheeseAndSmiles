@@ -170,7 +170,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/smileConfidenceTextView"
         app:layout_constraintTop_toBottomOf="@+id/smileConfidenceTextView"
-        app:size="normal"
+        app:size="small"
         app:text_size="20dp"
         tools:targetApi="lollipop" />
 
