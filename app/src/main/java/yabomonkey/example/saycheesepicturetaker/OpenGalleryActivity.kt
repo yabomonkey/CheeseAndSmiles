@@ -4,7 +4,6 @@ import android.content.Intent
 import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.webkit.MimeTypeMap
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -123,7 +122,6 @@ class OpenGalleryActivity : AppCompatActivity() {
         if (mediaList.isEmpty()) {
             viewBinding.deleteButton.isEnabled = false
             viewBinding.shareButton.isEnabled = false
-            Log.d(TAG, "The mediaList is empty")
         }
 
         viewBinding.photoViewPager.apply {
