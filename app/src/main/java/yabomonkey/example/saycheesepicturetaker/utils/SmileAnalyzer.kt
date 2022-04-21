@@ -22,7 +22,6 @@ class SmileAnalyzer(private val smilePercentage: Int, private val listener: Smil
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @ExperimentalGetImage
     override fun analyze(imageProxy: ImageProxy) {
-//        Log.d(TAG, ".analyze: called")
         val realTimeOpts = FaceDetectorOptions.Builder()
             .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
             .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
@@ -35,10 +34,9 @@ class SmileAnalyzer(private val smilePercentage: Int, private val listener: Smil
             val detector = FaceDetection.getClient(realTimeOpts)
             var numberOfSmiles = 0
             var allSmiling = false
-            val result = detector.process(image)
+            detector.process(image)
                 .addOnSuccessListener { faces ->
                     for (face in faces) {
-                        Log.d(TAG, "Detected a face: ${face.trackingId} with smile: ${face.smilingProbability} and the minimum detect is ${smilePercentage.toFloat()}")
                         if (face.smilingProbability != null) {
                             if (face.smilingProbability!! > smilePercentage.toFloat()/100) {
                                 Log.d(TAG, "Detected a smile with probability: ${face.smilingProbability} and there are ${faces.size} faces detected")
@@ -46,7 +44,6 @@ class SmileAnalyzer(private val smilePercentage: Int, private val listener: Smil
 
                             }
                         }
-
                     }
                     if (faces.size != 0 && faces.size == numberOfSmiles) {
                         allSmiling = true
@@ -54,17 +51,10 @@ class SmileAnalyzer(private val smilePercentage: Int, private val listener: Smil
                     }
                     listener?.invoke(allSmiling)
                 }
-                .addOnFailureListener { e ->
-                    // Task failed with an exception
-                    // ...
+                .addOnFailureListener { _ ->
+                    Log.e(TAG, "detector.process failed")
                 }
-
-
-
-
             imageProxy.close()
-//            Log.d(TAG, ".analyze: ends and closed the imageProxy")
         }
-
     }
 }
