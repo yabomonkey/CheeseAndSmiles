@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Menu
@@ -56,14 +55,14 @@ class MainActivity : BaseActivity() {
             )
         }
 
-        val delaySeekBar: SeekBar = binding.mainContainer.delaySeekBar
+        var delayTextViewHolder = "Delay before photo shoot (in seconds): ${binding.mainContainer.delaySeekBar.progress}"
+        binding.mainContainer.delayTextView.text = delayTextViewHolder
 
-        binding.mainContainer.delayTextView.text = "Delay before photo shoot (in seconds): ${delaySeekBar.progress}"
-
-        delaySeekBar.setOnSeekBarChangeListener(object :
+        binding.mainContainer.delaySeekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                binding.mainContainer.delayTextView.text = "Delay before photo shoot (in seconds): $progress"
+                delayTextViewHolder = "Delay before photo shoot (in seconds): $progress"
+                binding.mainContainer.delayTextView.text = delayTextViewHolder
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -73,16 +72,15 @@ class MainActivity : BaseActivity() {
             }
         })
 
-        val exposureSeekBar: SeekBar = findViewById(R.id.exposureSeekBar)
+        var exposureTextViewHolder = "Length of Photo Session (in seconds): ${binding.mainContainer.exposureSeekBar.progress}"
+        binding.mainContainer.exposureTextView.text = exposureTextViewHolder
 
 
-        binding.mainContainer.exposureTextView.text =
-            "Length of Photo Session (in seconds): ${exposureSeekBar.progress}"
-
-        exposureSeekBar.setOnSeekBarChangeListener(object :
+        binding.mainContainer.exposureSeekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                "Length of Photo Shoot (in seconds): $progress".also { binding.mainContainer.exposureTextView.text = it }
+                exposureTextViewHolder = "Length of Photo Shoot (in seconds): $progress"
+                binding.mainContainer.exposureTextView.text = exposureTextViewHolder
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -90,7 +88,7 @@ class MainActivity : BaseActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
-        binding.mainContainer.cameraButtonGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
+        binding.mainContainer.cameraButtonGroup.addOnButtonCheckedListener { _, checkedId, _ ->
             if (checkedId == R.id.backCamMaterialButton) {
                 cameraLabelString = getString(R.string.cameraSelectedLabelText) + " " + binding.mainContainer.backCamMaterialButton.text
                 binding.mainContainer.cameraTextView.text = cameraLabelString
@@ -142,8 +140,8 @@ class MainActivity : BaseActivity() {
             } else {
                 CameraSelector.LENS_FACING_FRONT
             }
-            intent.putExtra(DELAY_LENGTH, delaySeekBar.progress)
-            intent.putExtra(EXPOSURE_LENGTH, exposureSeekBar.progress)
+            intent.putExtra(DELAY_LENGTH, binding.mainContainer.delaySeekBar.progress)
+            intent.putExtra(EXPOSURE_LENGTH, binding.mainContainer.exposureSeekBar.progress)
             intent.putExtra(SELECTED_CAMERA, selectedCamera)
             intent.putExtra(SMILE_PERCENTAGE, smileSliderPosition.toInt())
             startActivity(intent)
@@ -263,7 +261,7 @@ class MainActivity : BaseActivity() {
 
     private fun checkAvailableCameras() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-        cameraProviderFuture.addListener(Runnable {
+        cameraProviderFuture.addListener({
 
             // CameraProvider
             cameraProvider = cameraProviderFuture.get()
@@ -299,10 +297,6 @@ class MainActivity : BaseActivity() {
             mutableListOf(
                 Manifest.permission.CAMERA,
                 Manifest.permission.RECORD_AUDIO
-            ).apply {
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-                    add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                }
-            }.toTypedArray()
+            ).toTypedArray()
     }
 }
