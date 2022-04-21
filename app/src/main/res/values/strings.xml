@@ -7,15 +7,12 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-
     <string name="take_photo">Take Photo</string>
     <string name="start_capture">Start Capture</string>
     <string name="stop_capture">Stop Capture</string>
     <string name="delay_timer">Delay Timer</string>
     <string name="exposure_timer">Exposure Timer</string>
-    <string name="go_go_gadget_camera">Start Smile Finding Camera</string>
+    <string name="go_go_gadget_camera">Start Photo Shoot!</string>
     <string name="gallery_button_alt">Gallery</string>
     <string name="back_button_alt">Back</string>
     <string name="share_button_alt">Share</string>
@@ -27,7 +24,7 @@
     <string name="camera_selector_back">Rear Camera</string>
     <string name="camera_selector_front">Selfie Camera</string>
     <string name="cameraSelectedLabelText">Camera to be used:</string>
-    <string name="smileConfidenceLabelText">How big does everyone need to smile (%):</string>
+    <string name="smileConfidenceLabelText">Minimum Smile Detected:</string>
     <string name="about_button_alt">About</string>
     <string name="about_dialog">This app is used to take pictures of smiling people. It will only take a picture if everyone is smiling. \n\n Set your preferences and then start taking pictures! \n\n Created by Daniel Ellis</string>
     <string name="about_title">About this app</string>
