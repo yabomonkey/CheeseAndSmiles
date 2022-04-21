@@ -39,7 +39,6 @@ class SmileAnalyzer(private val smilePercentage: Int, private val listener: Smil
                     for (face in faces) {
                         if (face.smilingProbability != null) {
                             if (face.smilingProbability!! > smilePercentage.toFloat()/100) {
-                                Log.d(TAG, "Detected a smile with probability: ${face.smilingProbability} and there are ${faces.size} faces detected")
                                 numberOfSmiles++
 
                             }
@@ -47,7 +46,6 @@ class SmileAnalyzer(private val smilePercentage: Int, private val listener: Smil
                     }
                     if (faces.size != 0 && faces.size == numberOfSmiles) {
                         allSmiling = true
-                        Log.d(TAG, "Setting allSmiling to $allSmiling")
                     }
                     listener?.invoke(allSmiling)
                 }

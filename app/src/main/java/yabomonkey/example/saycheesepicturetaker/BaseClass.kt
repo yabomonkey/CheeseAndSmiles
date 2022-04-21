@@ -1,7 +1,6 @@
 package yabomonkey.example.saycheesepicturetaker
 
 import android.os.Build
-import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -19,8 +18,6 @@ open class BaseActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     internal fun activateToolbar(enableHome: Boolean) {
-        Log.d(TAG, ".activateToolbar")
-
         val toolbar = findViewById<View>(R.id.toolbar) as androidx.appcompat.widget.Toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(enableHome)
