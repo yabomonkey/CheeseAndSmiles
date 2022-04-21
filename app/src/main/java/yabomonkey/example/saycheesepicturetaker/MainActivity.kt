@@ -21,7 +21,6 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.setPadding
-import androidx.navigation.ui.AppBarConfiguration
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.button.MaterialButton
@@ -30,12 +29,10 @@ import com.ramotion.fluidslider.FluidSlider
 import yabomonkey.example.saycheesepicturetaker.databinding.ActivityMainBinding
 import yabomonkey.example.saycheesepicturetaker.utils.showImmersive
 
-private const val TAG = "MainActivity"
 const val APP_TAG = "Smile-Finder"
 
 class MainActivity : BaseActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var delayProgressLabel: TextView
