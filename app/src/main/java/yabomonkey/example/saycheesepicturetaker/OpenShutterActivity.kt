@@ -188,7 +188,6 @@ class OpenShutterActivity : AppCompatActivity() {
                         onImageSaved(output: ImageCapture.OutputFileResults) {
                     val msg = "Photo capture succeeded: ${output.savedUri}"
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, msg)
                 }
             }
         )
@@ -202,7 +201,6 @@ class OpenShutterActivity : AppCompatActivity() {
                 if (counter > 0) {
                     viewBinding.timerCountdown.text = counter.toString()
                     counter--
-//                    Log.d(TAG, "The counter is $counter")
                 } else {
                     viewBinding.timerCountdown.text = ""
                 }

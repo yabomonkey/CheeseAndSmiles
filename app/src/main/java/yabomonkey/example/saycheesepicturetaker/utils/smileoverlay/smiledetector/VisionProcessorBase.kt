@@ -21,7 +21,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build.VERSION_CODES
 import android.os.SystemClock
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.GuardedBy
 import androidx.annotation.RequiresApi
@@ -34,11 +33,7 @@ import com.google.android.odml.image.MediaMlImageBuilder
 import com.google.android.odml.image.MlImage
 import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.common.InputImage
-import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.BitmapUtils
-import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.CameraImageGraphic
-import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.FrameMetadata
-import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.ScopedExecutor
-import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.GraphicOverlay
+import yabomonkey.example.saycheesepicturetaker.utils.smileoverlay.*
 import java.lang.Math.max
 import java.lang.Math.min
 import java.nio.ByteBuffer
@@ -306,29 +301,29 @@ abstract class VisionProcessorBase<T>(context: Context) :
           // Only log inference info once per second. When frameProcessedInOneSecondInterval is
           // equal to 1, it means this is the first frame processed during the current second.
           if (frameProcessedInOneSecondInterval == 1) {
-            Log.d(TAG, "Num of Runs: $numRuns")
-            Log.d(
-              TAG,
-              "Frame latency: max=" +
-                maxFrameMs +
-                ", min=" +
-                minFrameMs +
-                ", avg=" +
-                totalFrameMs / numRuns
-            )
-            Log.d(
-              TAG,
-              "Detector latency: max=" +
-                maxDetectorMs +
-                ", min=" +
-                minDetectorMs +
-                ", avg=" +
-                totalDetectorMs / numRuns
-            )
+//            Log.d(TAG, "Num of Runs: $numRuns")
+//            Log.d(
+//              TAG,
+//              "Frame latency: max=" +
+//                maxFrameMs +
+//                ", min=" +
+//                minFrameMs +
+//                ", avg=" +
+//                totalFrameMs / numRuns
+//            )
+//            Log.d(
+//              TAG,
+//              "Detector latency: max=" +
+//                maxDetectorMs +
+//                ", min=" +
+//                minDetectorMs +
+//                ", avg=" +
+//                totalDetectorMs / numRuns
+//            )
             val mi = ActivityManager.MemoryInfo()
             activityManager.getMemoryInfo(mi)
             val availableMegs: Long = mi.availMem / 0x100000L
-            Log.d(TAG, "Memory available in system: $availableMegs MB")
+//            Log.d(TAG, "Memory available in system: $availableMegs MB")
           }
           graphicOverlay.clear()
           if (originalCameraImage != null) {
@@ -363,7 +358,7 @@ abstract class VisionProcessorBase<T>(context: Context) :
               Toast.LENGTH_SHORT
             )
             .show()
-          Log.d(TAG, error)
+//          Log.d(TAG, error)
           e.printStackTrace()
           this@VisionProcessorBase.onFailure(e)
         }
