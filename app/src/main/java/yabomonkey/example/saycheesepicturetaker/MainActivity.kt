@@ -11,7 +11,8 @@ import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.SeekBar
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.camera.core.CameraSelector
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -23,9 +24,6 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.setPadding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.button.MaterialButtonToggleGroup
-import com.ramotion.fluidslider.FluidSlider
 import yabomonkey.example.saycheesepicturetaker.databinding.ActivityMainBinding
 import yabomonkey.example.saycheesepicturetaker.utils.showImmersive
 
@@ -35,21 +33,11 @@ class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var delayProgressLabel: TextView
-    private lateinit var exposureProgressLabel: TextView
-    private lateinit var cameraSelectedLabel: TextView
-    private lateinit var smileConfidenceLabel: TextView
-
     private lateinit var cameraLabelString: String
 
-    private lateinit var galleryThumbnail: ImageButton
     private var imagesInGallery: Boolean = false
 
     private var cameraProvider: ProcessCameraProvider? = null
-
-    private lateinit var cameraSelectionButtons: MaterialButtonToggleGroup
-    private lateinit var backCamMaterialButton: MaterialButton
-    private lateinit var frontCamMaterialButton: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,16 +56,14 @@ class MainActivity : BaseActivity() {
             )
         }
 
-        val delaySeekBar: SeekBar = findViewById(R.id.delaySeekBar)
+        val delaySeekBar: SeekBar = binding.mainContainer.delaySeekBar
 
-        delayProgressLabel = findViewById(R.id.delayTextView)
-        delayProgressLabel.text = "Delay before photo shoot (in seconds): ${delaySeekBar.progress}"
+        binding.mainContainer.delayTextView.text = "Delay before photo shoot (in seconds): ${delaySeekBar.progress}"
 
         delaySeekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                delayProgressLabel.text = "Delay before photo shoot (in seconds): $progress"
-//                Log.d(TAG, "delaySeekBar: onProgressChanged")
+                binding.mainContainer.delayTextView.text = "Delay before photo shoot (in seconds): $progress"
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -89,15 +75,14 @@ class MainActivity : BaseActivity() {
 
         val exposureSeekBar: SeekBar = findViewById(R.id.exposureSeekBar)
 
-        exposureProgressLabel = findViewById(R.id.exposureTextView)
-        exposureProgressLabel.text =
+
+        binding.mainContainer.exposureTextView.text =
             "Length of Photo Session (in seconds): ${exposureSeekBar.progress}"
 
         exposureSeekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                "Length of Photo Shoot (in seconds): $progress".also { exposureProgressLabel.text = it }
-//                Log.d(TAG, "exposureSeekBar: onProgressChanged")
+                "Length of Photo Shoot (in seconds): $progress".also { binding.mainContainer.exposureTextView.text = it }
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -105,65 +90,54 @@ class MainActivity : BaseActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
-
-        cameraSelectedLabel = findViewById(R.id.cameraTextView)
-        cameraSelectionButtons = findViewById(R.id.camera_button_group)
-        backCamMaterialButton = findViewById(R.id.backCamMaterialButton)
-        frontCamMaterialButton = findViewById(R.id.frontCamMaterialButton)
-
-        cameraSelectionButtons.addOnButtonCheckedListener { group, checkedId, isChecked ->
+        binding.mainContainer.cameraButtonGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
             if (checkedId == R.id.backCamMaterialButton) {
-                cameraLabelString = getString(R.string.cameraSelectedLabelText) + " " + backCamMaterialButton.text
-                cameraSelectedLabel.text = cameraLabelString
+                cameraLabelString = getString(R.string.cameraSelectedLabelText) + " " + binding.mainContainer.backCamMaterialButton.text
+                binding.mainContainer.cameraTextView.text = cameraLabelString
             }
             else if (checkedId == R.id.frontCamMaterialButton) {
-                cameraLabelString = getString(R.string.cameraSelectedLabelText) + " " + frontCamMaterialButton.text
-                cameraSelectedLabel.text = cameraLabelString
+                cameraLabelString = getString(R.string.cameraSelectedLabelText) + " " + binding.mainContainer.frontCamMaterialButton.text
+                binding.mainContainer.cameraTextView.text = cameraLabelString
             }
         }
 
         checkAvailableCameras()
 
-        if (cameraSelectionButtons.checkedButtonId == R.id.backCamMaterialButton) {
-            cameraLabelString = getString(R.string.cameraSelectedLabelText) + " " + backCamMaterialButton.text
-            cameraSelectedLabel.text = cameraLabelString
-        } else if (cameraSelectionButtons.checkedButtonId == R.id.frontCamMaterialButton) {
-            cameraLabelString = getString(R.string.cameraSelectedLabelText) + " " + frontCamMaterialButton.text
-            cameraSelectedLabel.text = cameraLabelString
+        if (binding.mainContainer.cameraButtonGroup.checkedButtonId == R.id.backCamMaterialButton) {
+            cameraLabelString = getString(R.string.cameraSelectedLabelText) + " " + binding.mainContainer.backCamMaterialButton.text
+            binding.mainContainer.cameraTextView.text = cameraLabelString
+        } else if (binding.mainContainer.cameraButtonGroup.checkedButtonId == R.id.frontCamMaterialButton) {
+            cameraLabelString = getString(R.string.cameraSelectedLabelText) + " " + binding.mainContainer.frontCamMaterialButton.text
+            binding.mainContainer.cameraTextView.text = cameraLabelString
         }
 
         val maxSlider = 100
         val minSlider = 0
         val totalSlider = maxSlider - minSlider
 
-        val smileSlider = findViewById<FluidSlider>(R.id.smileFluidSlider)
+        val smileSlider = binding.mainContainer.smileFluidSlider
         smileSlider.position = 0.5f
         smileSlider.startText ="Barely Smiling"
         smileSlider.endText = "Big Cheesy Smile"
         var smileSliderPosition = "${minSlider + (totalSlider  * smileSlider.position).toInt()}"
         var smileConfidenceString: String = getString(R.string.smileConfidenceLabelText) + " " + smileSliderPosition
-        smileConfidenceLabel = findViewById(R.id.smileConfidenceTextView)
-        smileConfidenceLabel.text = smileConfidenceString
+        binding.mainContainer.smileConfidenceTextView.text = smileConfidenceString
 
         smileSlider.positionListener = {
             pos -> smileSliderPosition = "${minSlider + (totalSlider  * pos).toInt()}"
             smileConfidenceString = getString(R.string.smileConfidenceLabelText) + " " + smileSliderPosition
-            smileConfidenceLabel.text = smileConfidenceString
+            binding.mainContainer.smileConfidenceTextView.text = smileConfidenceString
             smileSlider.bubbleText = smileSliderPosition
         }
 
-        val smileOverlayButton: Button = findViewById(R.id.smileOverlayButton)
-
-        smileOverlayButton.setOnClickListener {
+        binding.mainContainer.smileOverlayButton.setOnClickListener {
             val intent = Intent(this, OpenSmileOverlayActivity::class.java)
             startActivity(intent)
         }
 
-        var openShutterButton: Button = findViewById(R.id.openShutterButton)
-
-        openShutterButton.setOnClickListener {
+        binding.mainContainer.openShutterButton.setOnClickListener {
             val intent = Intent(this, OpenShutterActivity::class.java)
-            val selectedCamera = if (cameraSelectionButtons.checkedButtonId == R.id.backCamMaterialButton) {
+            val selectedCamera = if (binding.mainContainer.cameraButtonGroup.checkedButtonId == R.id.backCamMaterialButton) {
                 CameraSelector.LENS_FACING_BACK
             } else {
                 CameraSelector.LENS_FACING_FRONT
@@ -175,8 +149,7 @@ class MainActivity : BaseActivity() {
             startActivity(intent)
         }
 
-        galleryThumbnail = findViewById(R.id.photo_view_button)
-        galleryThumbnail.setOnClickListener {
+        binding.mainContainer.photoViewButton.setOnClickListener {
             if (imagesInGallery) {
                 val intent = Intent(this, OpenGalleryActivity::class.java)
                 startActivity(intent)
@@ -263,8 +236,7 @@ class MainActivity : BaseActivity() {
             imagesInGallery = true
 
             // Run the operations in the view's thread
-            galleryThumbnail = findViewById(R.id.photo_view_button)
-            galleryThumbnail.let { photoViewButton ->
+            binding.mainContainer.photoViewButton.let { photoViewButton ->
                 photoViewButton.post {
                     // Remove thumbnail padding
                     photoViewButton.setPadding(resources.getDimension(R.dimen.stroke_small).toInt())
@@ -296,16 +268,16 @@ class MainActivity : BaseActivity() {
             // CameraProvider
             cameraProvider = cameraProviderFuture.get()
 
-            backCamMaterialButton.isClickable = hasBackCamera()
-            if (!backCamMaterialButton.isClickable) {
-                backCamMaterialButton.visibility = View.INVISIBLE
-                cameraSelectionButtons.check(R.id.frontCamMaterialButton)
+            binding.mainContainer.backCamMaterialButton.isClickable = hasBackCamera()
+            if (!binding.mainContainer.backCamMaterialButton.isClickable) {
+                binding.mainContainer.backCamMaterialButton.visibility = View.INVISIBLE
+                binding.mainContainer.cameraButtonGroup.check(R.id.frontCamMaterialButton)
             }
 
-            frontCamMaterialButton.isClickable = hasFrontCamera()
-            if (!frontCamMaterialButton.isClickable) frontCamMaterialButton.visibility = View.INVISIBLE
+            binding.mainContainer.frontCamMaterialButton.isClickable = hasFrontCamera()
+            if (!binding.mainContainer.frontCamMaterialButton.isClickable) binding.mainContainer.frontCamMaterialButton.visibility = View.INVISIBLE
 
-            if (!backCamMaterialButton.isClickable && !frontCamMaterialButton.isClickable) throw IllegalStateException("Back and front camera are unavailable")
+            if (!binding.mainContainer.backCamMaterialButton.isClickable && !binding.mainContainer.frontCamMaterialButton.isClickable) throw IllegalStateException("Back and front camera are unavailable")
 
 
         }, ContextCompat.getMainExecutor(this))
