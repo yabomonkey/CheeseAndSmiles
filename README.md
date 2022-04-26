@@ -23,13 +23,14 @@ Open the Android project file in Android Studio or Eclipse with Android Developm
 
 ## Usage
 
-The user is presented with a screen full of settings which will effect the 'Photo Shoot' started with the bright button at the bottom of the screen:
-<img src="Assets/Screenshots/CheeseSmilesSettings.jpg" width="200"/>
+The user is presented with a screen full of settings which will effect the 'Photo Shoot' started with the bright button at the bottom of the screen.
 
-The latest photo taken by the app is displayed on a Photo Button on the lower right hand corner of the screen and when tapped, takes the user to a gallery to view all the photos taken by the app. The gallery allows the user to share and/or delete photos:
-<img src="Assets/Screenshots/CheeseSmilesGallery.jpg" width="200"/>
+The latest photo taken by the app is displayed on a Photo Button on the lower right hand corner of the screen and when tapped, takes the user to a gallery to view all the photos taken by the app. The gallery allows the user to share and/or delete photos.
 
 The settings screen also includes a button which leads to a realtime example of the smile tracking done by the app.
+
+<img src="Assets/Screenshots/CheeseSmilesSettings.jpg" width="200"/>
+<img src="Assets/Screenshots/CheeseSmilesGallery.jpg" width="200"/>
 <img src="Assets/Screenshots/CheeseSmilesRealTime.jpg" width="200"/>
 
 ## Versioning
